@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>by.inhw.flur</groupId>
     <artifactId>flur</artifactId>
@@ -28,6 +29,7 @@
                 <configuration>
                     <source>${maven.compiler.plugin.java.version}</source>
                     <target>${maven.compiler.plugin.java.version}</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
@@ -65,4 +67,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <url>http://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
+
 </project>
