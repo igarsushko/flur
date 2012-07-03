@@ -15,7 +15,7 @@
     </properties>
 
     <scm>
-        <connection>scm:git:ssh://github.com/igarsushko/flur.git</connection>
+        <connection>scm:git:https://github.com/igarsushko/flur.git</connection>
     </scm>
 
     <build>
