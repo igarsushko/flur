@@ -2,6 +2,9 @@ package by.inhw.flur.platform.swing.controller;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
@@ -17,6 +20,7 @@ public class ControllerListener extends KeyAdapter
     static final int LEFT = 3;
     static final int RIGHT = 4;
     Agent agent;
+    Set<Integer> pressedKeys = Collections.synchronizedSet(new HashSet<Integer>());
 
     public ControllerListener(Agent agent)
     {
@@ -30,7 +34,11 @@ public class ControllerListener extends KeyAdapter
     @Override
     public void keyReleased(KeyEvent e)
     {
-        state = IDLE;
+        pressedKeys.remove(new Integer(e.getKeyCode()));
+        if (pressedKeys.size() == 0)
+        {
+            state = IDLE;
+        }
     }
 
     @Override
@@ -57,6 +65,7 @@ public class ControllerListener extends KeyAdapter
         {
             state = RIGHT;
         }
+        pressedKeys.add(new Integer(c));
     }
 
     void runMovementListening()
