@@ -2,18 +2,20 @@ package by.inhw.flur.util;
 
 public class Timing
 {
-    public static final int FRAME_TIME_MILLIS = 10;
+    public static final int FRAME_TIME_MILLIS = 25;
     public static final double FRAME_TIME_SEC = (double) FRAME_TIME_MILLIS / 1000.0;
 
-    long frameNumber = 0;
+    private long frameNumber = 0;
 
-    double lastFrameTimestamp = System.currentTimeMillis();
-    double lastFrameDuration = 0;
+    private double lastFrameTimestamp = System.currentTimeMillis();
+    private double lastFrameDuration = 0;
 
-    float fps = 0;
-    double averageFrameDuration = 0;
+    private float fps = 0;
+    private double averageFrameDuration = 0;
 
-    static boolean isPaused = false;
+    private static boolean isPaused = false;
+
+    private static final double startTime = System.currentTimeMillis();
 
     // Updates the global frame information. Should be called once per frame.
     public void update()

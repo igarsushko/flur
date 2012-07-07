@@ -22,8 +22,8 @@ public class Flur
     {
         JFrame frame = new JFrame("Flur");
         Debugger.setFrame(frame);
-        Debugger.off();
-        // Timing.setPaused(true);
+        // Debugger.off();
+        //Timing.setPaused(true);
         frame.setLayout(new BorderLayout());
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

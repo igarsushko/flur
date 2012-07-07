@@ -1,8 +1,5 @@
 package by.inhw.flur.platform.swing;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,15 +9,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import by.inhw.flur.util.CpuProfiler;
+import by.inhw.flur.util.CpuProfiler.UpdateHandler;
+
 public class Debugger
 {
-    static JFrame frame;
-    static JPanel panel;
-    static boolean on = true;
+    private static JFrame frame;
+    private static JPanel panel;
+    private static boolean on = true;
 
-    static ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+    // in milliseconds
+    private static int statInterval = 1000;
+    private static DecimalFormat cpuLoadFormat = new DecimalFormat("#.##");
+    private static DecimalFormat memUsedFormat = new DecimalFormat("#.##");
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.############");
 
-    static Map<String, JLabel> labels = new HashMap<String, JLabel>();
+    private static Map<String, JLabel> labels = new HashMap<String, JLabel>();
 
     public static void on()
     {
@@ -39,10 +43,10 @@ public class Debugger
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBounds(5, 5, 200, 20);
         panel.setOpaque(false);
-        // panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
         frame.add(panel);
 
-        // logSome();
+        logCpuUsage();
+        logMemoryUsage();
     }
 
     static void addLabelToFrame(JLabel label)
@@ -77,8 +81,7 @@ public class Debugger
         if (value instanceof Double)
         {
             Double d = (Double) value;
-            DecimalFormat df = new DecimalFormat("#.############");
-            result = df.format(d.doubleValue());
+            result = decimalFormat.format(d);
         }
         else
         {
@@ -88,24 +91,39 @@ public class Debugger
         return result;
     }
 
-    static void logSome()
+    static void logCpuUsage()
+    {
+        CpuProfiler profiler = new CpuProfiler(statInterval);
+        profiler.setUpdateHandler(new UpdateHandler()
+        {
+            public void onUpdate(double cpuLoad)
+            {
+                String cpuUsage = cpuLoadFormat.format(cpuLoad);
+                Debugger.log("CPU ", cpuUsage + "%");
+            }
+        });
+        profiler.start();
+    }
+
+    static void logMemoryUsage()
     {
         new Thread()
         {
             public void run()
             {
+                this.setName("Memory monitor");
+
                 while (true)
                 {
-                    long[] ids = threadMXBean.getAllThreadIds();
-                    for (long id : ids)
-                    {
-                        ThreadInfo info = threadMXBean.getThreadInfo(id, Integer.MAX_VALUE);
-                        log(info.getThreadName(), info.getThreadId());
-                    }
+                    long used = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+                    double usedKb = (double) used / 1024;
+                    String useKbFormatted = memUsedFormat.format(usedKb);
+
+                    Debugger.log("Memory ", useKbFormatted + "Kb");
 
                     try
                     {
-                        Thread.sleep(100);
+                        Thread.sleep(statInterval);
                     }
                     catch (InterruptedException e)
                     {
@@ -114,5 +132,6 @@ public class Debugger
                 }
             };
         }.start();
+
     }
 }

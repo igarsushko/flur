@@ -82,6 +82,7 @@ public class ControllerListener extends KeyAdapter
         {
             public void run()
             {
+                setName(agent.getName());
                 while (true)
                 {
                     Point velocity = new Point();
