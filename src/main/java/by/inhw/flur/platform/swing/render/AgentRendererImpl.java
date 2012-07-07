@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.World;
 import by.inhw.flur.model.movement.Point;
+import by.inhw.flur.platform.swing.Debugger;
 import by.inhw.flur.render.AgentRenderer;
 
 public class AgentRendererImpl extends JPanel implements AgentRenderer
@@ -51,12 +52,10 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         int x = getCoordinate(agent.x());
         int y = getCoordinate(agent.y());
 
-        // Debugger.log(agent.getName() + ": X real: ",
-        // agent.getPosition().getX());
-        // Debugger.log(agent.getName() + ": X actual: ", x);
-        // Debugger.log(agent.getName() + ": Y real: ",
-        // agent.getPosition().getY());
-        // Debugger.log(agent.getName() + ": Y actual: ", y);
+        //Debugger.log(agent.getName() + ": X (in game wold): ", agent.getPosition().getX());
+        //Debugger.log(agent.getName() + ": X (actual on screen): ", x);
+        //Debugger.log(agent.getName() + ": Y (in game wold): ", agent.getPosition().getY());
+        //Debugger.log(agent.getName() + ": Y (actual on screen): ", y);
 
         double rotation = agent.getOrientation();
 

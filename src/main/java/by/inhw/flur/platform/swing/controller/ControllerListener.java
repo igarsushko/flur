@@ -49,6 +49,14 @@ public class ControllerListener extends KeyAdapter
         {
             System.exit(0);
         }
+        else if (c == KeyEvent.VK_F1)
+        {
+            Timing.setPaused(false);
+        }
+        else if (c == KeyEvent.VK_F2)
+        {
+            Timing.setPaused(true);
+        }
         else if (c == KeyEvent.VK_UP)
         {
             state = UP;

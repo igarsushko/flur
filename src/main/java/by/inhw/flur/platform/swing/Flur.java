@@ -14,6 +14,7 @@ import by.inhw.flur.platform.swing.controller.ControllerListener;
 import by.inhw.flur.platform.swing.render.WorldRendererImpl;
 import by.inhw.flur.util.LevelLoader;
 import by.inhw.flur.util.PropertiesManager;
+import by.inhw.flur.util.Timing;
 
 public class Flur
 {
@@ -22,6 +23,7 @@ public class Flur
         JFrame frame = new JFrame("Flur");
         Debugger.setFrame(frame);
         Debugger.off();
+        // Timing.setPaused(true);
         frame.setLayout(new BorderLayout());
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -16,10 +16,13 @@ public class Mover
                 {
                     try
                     {
-                        SteeringOutput steering = agent.nextMove();
+                        if (!Timing.isPaused())
+                        {
+                            SteeringOutput steering = agent.nextMove();
 
-                        agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
-                        Thread.sleep(Timing.FRAME_TIME_MILLIS);
+                            agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
+                            Thread.sleep(Timing.FRAME_TIME_MILLIS);
+                        }
                     }
                     catch (InterruptedException e1)
                     {
