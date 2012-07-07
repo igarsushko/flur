@@ -12,6 +12,7 @@ public class Mover
         {
             public void run()
             {
+                setName(agent.getName());
                 while (true)
                 {
                     try
@@ -19,10 +20,10 @@ public class Mover
                         if (!Timing.isPaused())
                         {
                             SteeringOutput steering = agent.nextMove();
-
                             agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
-                            Thread.sleep(Timing.FRAME_TIME_MILLIS);
                         }
+
+                        Thread.sleep(Timing.FRAME_TIME_MILLIS);
                     }
                     catch (InterruptedException e1)
                     {
