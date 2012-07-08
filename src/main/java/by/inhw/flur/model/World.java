@@ -54,22 +54,22 @@ public class World extends WorldPart
      */
     public void normalizeCoordinates2D(Agent agent)
     {
-        if (agent.x() < 0)
+        if (agent.x() < 0.5)
         {
-            agent.getKinematic().setX(this.getWidth() - 1);
+            agent.getKinematic().setX(this.getWidth() - 0.5);
         }
-        else if (agent.x() > this.getWidth() - 1)
+        else if (agent.x() > this.getWidth() - 0.5)
         {
-            agent.getKinematic().setX(0);
+            agent.getKinematic().setX(0.5);
         }
 
-        if (agent.y() < 0)
+        if (agent.y() < 0.5)
         {
-            agent.getKinematic().setY(this.getHeight() - 1);
+            agent.getKinematic().setY(this.getHeight() - 0.5);
         }
-        else if (agent.y() > this.getHeight() - 1)
+        else if (agent.y() > this.getHeight() - 0.5)
         {
-            agent.getKinematic().setY(0);
+            agent.getKinematic().setY(0.5);
         }
     }
 }

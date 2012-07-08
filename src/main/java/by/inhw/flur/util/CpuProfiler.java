@@ -19,7 +19,7 @@ public class CpuProfiler extends Thread
     private static final int MILLISEC_IN_SEC = 1000;
     private static final int NANOSEC_IN_SEC = 1000000000;
     private ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-    private final Map<Long, Stat> threadStats = new HashMap<Long, Stat>();
+    private Map<Long, Stat> threadStats = new HashMap<Long, Stat>();
     private UpdateHandler updateHandler;
 
     private static class Stat

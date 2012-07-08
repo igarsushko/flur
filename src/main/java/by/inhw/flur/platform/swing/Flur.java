@@ -40,13 +40,13 @@ public class Flur
         world.renderWorld();
 
         Agent player = world.registerAgent(new Agent("player", "red", 7, 6));
-        player.setPosition(new Point(0, 0));
+        player.setPosition(new Point(1, 1));
 
         ControllerListener keyListener = new ControllerListener(player);
         frame.addKeyListener(keyListener);
 
         Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 4, 6));
-        bot1.setPosition(new Point(0, 6));
+        bot1.setPosition(new Point(2, 6));
         bot1.setBrain(BrainFactory.seekAndArrive(bot1, player));
         Mover.startActing(bot1);
 

@@ -35,6 +35,30 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
     {
         super.paintComponent(g);
 
+        int x = getCoordinate(agent.x());
+        int y = getCoordinate(agent.y());
+
+        //Debugger.log(agent.getName() + ": X (in game wold): ", agent.getPosition().getX());
+        //Debugger.log(agent.getName() + ": X (actual on screen): ", x);
+        //Debugger.log(agent.getName() + ": Y (in game wold): ", agent.getPosition().getY());
+        //Debugger.log(agent.getName() + ": Y (actual on screen): ", y);
+
+        setAgentColor(g);
+
+        double rotation = agent.getOrientation();
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.rotate(-(rotation) - Math.toRadians(180), x, y);
+
+        int upperLeftX = x - scale / 2;
+        int upperLeftY = y - scale / 2;
+        g.fillRect(upperLeftX, upperLeftY, scale, scale);
+        drawPointer(upperLeftX, upperLeftY, g);
+        drawCenterOfMass(x, y, g);
+    }
+
+    void setAgentColor(Graphics g)
+    {
         String colorStr = agent.getColor();
         if ("red".equalsIgnoreCase(colorStr))
         {
@@ -48,21 +72,6 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         {
             g.setColor(Color.BLUE);
         }
-
-        int x = getCoordinate(agent.x());
-        int y = getCoordinate(agent.y());
-
-        //Debugger.log(agent.getName() + ": X (in game wold): ", agent.getPosition().getX());
-        //Debugger.log(agent.getName() + ": X (actual on screen): ", x);
-        //Debugger.log(agent.getName() + ": Y (in game wold): ", agent.getPosition().getY());
-        //Debugger.log(agent.getName() + ": Y (actual on screen): ", y);
-
-        double rotation = agent.getOrientation();
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.rotate(-(rotation) - Math.toRadians(180), x + scale / 2, y + scale / 2);
-        g.fillRect(x, y, scale, scale);
-        drawPointer(x, y, g);
     }
 
     int getCoordinate(double value)
@@ -84,5 +93,11 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         g.drawLine(p1.xInt(), p1.yInt(), p2.xInt(), p2.yInt());
         g.drawLine(p2.xInt(), p2.yInt(), p3.xInt(), p3.yInt());
         g.drawLine(p3.xInt(), p3.yInt(), p1.xInt(), p1.yInt());
+    }
+
+    void drawCenterOfMass(int x, int y, Graphics g)
+    {
+        g.setColor(Color.ORANGE);
+        g.drawLine(x, y, x, y);
     }
 }
