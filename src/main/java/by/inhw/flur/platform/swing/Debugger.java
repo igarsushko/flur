@@ -1,6 +1,7 @@
 package by.inhw.flur.platform.swing;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import by.inhw.flur.util.CpuProfiler;
-import by.inhw.flur.util.CpuProfiler.UpdateHandler;
 
 public class Debugger
 {
@@ -20,11 +20,12 @@ public class Debugger
 
     // in milliseconds
     private static int statInterval = 1000;
+
     private static DecimalFormat cpuLoadFormat = new DecimalFormat("#.##");
     private static DecimalFormat memUsedFormat = new DecimalFormat("#.##");
     private static DecimalFormat decimalFormat = new DecimalFormat("#.############");
 
-    private static Map<String, JLabel> labels = new HashMap<String, JLabel>();
+    private static Map<String, JLabel> labels = Collections.synchronizedMap(new HashMap<String, JLabel>());
 
     public static void on()
     {
@@ -49,12 +50,21 @@ public class Debugger
         logMemoryUsage();
     }
 
-    static void addLabelToFrame(JLabel label)
+    static synchronized JLabel addLabelToFrame(String name, JLabel label)
     {
+        label = new JLabel();
+        labels.put(name, label);
+
         int count = labels.size();
         panel.setBounds(5, 5, 200, 20 * count);
         panel.add(label);
         panel.repaint();
+        return label;
+    }
+
+    static void D(Object o)
+    {
+        System.out.println(Thread.currentThread().getName() + ": " + o);
     }
 
     public static void log(String name, Object value)
@@ -64,9 +74,7 @@ public class Debugger
             JLabel label = labels.get(name);
             if (label == null)
             {
-                label = new JLabel();
-                labels.put(name, label);
-                addLabelToFrame(label);
+                label = addLabelToFrame(name, label);
             }
 
             String formattedValue = format(value);
@@ -94,12 +102,12 @@ public class Debugger
     static void logCpuUsage()
     {
         CpuProfiler profiler = new CpuProfiler(statInterval);
-        profiler.setUpdateHandler(new UpdateHandler()
+        profiler.setUpdateHandler(new CpuProfiler.UpdateHandler()
         {
             public void onUpdate(double cpuLoad)
             {
-                String cpuUsage = cpuLoadFormat.format(cpuLoad);
-                Debugger.log("CPU ", cpuUsage + "%");
+                String cpuLoadFormatted = cpuLoadFormat.format(cpuLoad);
+                Debugger.log("CPU ", cpuLoadFormatted + "%");
             }
         });
         profiler.start();
