@@ -14,10 +14,10 @@ import by.inhw.flur.render.WorldRenderer;
 
 public class WorldRendererImpl extends JLayeredPane implements WorldRenderer
 {
-    World world;
-    int scale;
-    int actualWidth;
-    int actualHeight;
+    private World world;
+    private int scale;
+    private int actualWidth;
+    private int actualHeight;
 
     public WorldRendererImpl(int scale)
     {
@@ -78,5 +78,10 @@ public class WorldRendererImpl extends JLayeredPane implements WorldRenderer
                 g.fillRoundRect(x * scale, y * scale, scale, scale, (int) scale / 15, (int) scale / 15);
             }
         }
+    }
+
+    public int getScale()
+    {
+        return scale;
     }
 }

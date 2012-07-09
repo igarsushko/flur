@@ -66,5 +66,6 @@ public class Flur
         // Mover.startActing(bot4);
 
         frame.pack();
+        Debugger.setWorldRenderer(renderer);
     }
 }

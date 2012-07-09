@@ -94,6 +94,7 @@ public class CpuProfiler extends Thread
             long cpuTime = threadMXBean.getThreadCpuTime(id);
             if (cpuTime == -1)// thread is not alive
             {
+                threadStats.remove(id);
                 continue;
             }
 

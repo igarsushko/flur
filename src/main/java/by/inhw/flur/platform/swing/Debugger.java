@@ -1,5 +1,11 @@
 package by.inhw.flur.platform.swing;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,14 +14,20 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import by.inhw.flur.model.movement.Point;
+import by.inhw.flur.platform.swing.render.AgentRendererImpl;
+import by.inhw.flur.platform.swing.render.WorldRendererImpl;
 import by.inhw.flur.util.CpuProfiler;
 
 public class Debugger
 {
     private static JFrame frame;
-    private static JPanel panel;
+    private static WorldRendererImpl worldRenderer;
+    private static JPanel loggingPanel;
+    private static JPanel debugLayer;
     private static boolean on = true;
 
     // in milliseconds
@@ -37,14 +49,25 @@ public class Debugger
         on = false;
     }
 
+    public static void setWorldRenderer(WorldRendererImpl renderer)
+    {
+        Debugger.worldRenderer = renderer;
+
+        debugLayer = getDebugDrawLayer();
+        debugLayer.setOpaque(false);
+        debugLayer.setBounds(0, 0, renderer.getWidth(), renderer.getHeight());
+        renderer.add(debugLayer, JLayeredPane.POPUP_LAYER);
+        debugLayer.repaint();
+    }
+
     public static void setFrame(JFrame jframe)
     {
-        frame = jframe;
-        panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBounds(5, 5, 200, 20);
-        panel.setOpaque(false);
-        frame.add(panel);
+        Debugger.frame = jframe;
+        loggingPanel = new JPanel();
+        loggingPanel.setLayout(new BoxLayout(loggingPanel, BoxLayout.Y_AXIS));
+        loggingPanel.setBounds(5, 5, 200, 20);
+        loggingPanel.setOpaque(false);
+        frame.add(loggingPanel);
 
         logCpuUsage();
         logMemoryUsage();
@@ -56,9 +79,9 @@ public class Debugger
         labels.put(name, label);
 
         int count = labels.size();
-        panel.setBounds(5, 5, 200, 20 * count);
-        panel.add(label);
-        panel.repaint();
+        loggingPanel.setBounds(5, 5, 200, 20 * count);
+        loggingPanel.add(label);
+        loggingPanel.repaint();
         return label;
     }
 
@@ -82,7 +105,7 @@ public class Debugger
         }
     }
 
-    static String format(Object value)
+    private static String format(Object value)
     {
         String result = null;
 
@@ -99,7 +122,7 @@ public class Debugger
         return result;
     }
 
-    static void logCpuUsage()
+    private static void logCpuUsage()
     {
         CpuProfiler profiler = new CpuProfiler(statInterval);
         profiler.setUpdateHandler(new CpuProfiler.UpdateHandler()
@@ -113,7 +136,7 @@ public class Debugger
         profiler.start();
     }
 
-    static void logMemoryUsage()
+    private static void logMemoryUsage()
     {
         new Thread()
         {
@@ -140,6 +163,95 @@ public class Debugger
                 }
             };
         }.start();
-
     }
+
+    private static JPanel getDebugDrawLayer()
+    {
+        return new JPanel()
+        {
+            @Override
+            protected void paintComponent(Graphics g)
+            {
+                Graphics2D g2d = (Graphics2D) g;
+
+                // paintGlobalDebugInfo(g2d, worldRenderer.getScale());
+                // drawVector(new Point(6, 5), new Point(2, 7), g2d);
+            }
+        };
+    }
+
+    private static void paintGlobalDebugInfo(Graphics2D g, final int scale)
+    {
+        g.setColor(Color.ORANGE);
+
+        // x
+        int startX = (int) (scale / 2);
+        int startY = (int) (scale / 2);
+        int endX = (int) (scale * 5);
+        int endY = startY;
+        g.drawLine(startX, startY, endX, endY);
+        g.drawString("X", endX + scale / 3, endY);
+        // arrow
+        g.drawLine(endX, endY, endX - scale / 5, endY - scale / 10);
+        g.drawLine(endX, endY, endX - scale / 5, endY + scale / 10);
+
+        // y
+        startX = (int) (scale / 2);
+        startY = (int) (scale / 2);
+        endX = startX;
+        endY = (int) (scale * 5);
+        g.drawLine(startX, startY, endX, endY);
+        g.drawString("Y", endX, endY + scale / 2);
+        // arrow
+        g.drawLine(endX, endY, endX - scale / 10, endY - scale / 5);
+        g.drawLine(endX, endY, endX + scale / 10, endY - scale / 5);
+    }
+
+    private static void drawVector(Point from, Point to, Graphics2D g, boolean doCaption)
+    {
+        g.setColor(Color.ORANGE);
+
+        int scale = worldRenderer.getScale();
+
+        int startX = AgentRendererImpl.getCoordinate(from.getX(), scale);
+        int startY = AgentRendererImpl.getCoordinate(from.getY(), scale);
+        int endX = AgentRendererImpl.getCoordinate(to.getX(), scale);
+        int endY = AgentRendererImpl.getCoordinate(to.getY(), scale);
+
+        // vector
+        g.drawLine(startX, startY, endX, endY);
+
+        int middleX = startX + ((endX - startX) / 2);
+        middleX += middleX / 25;
+        int middleY = startY + ((endY - startY) / 2);
+        // middleY += middleY / 10;
+
+        if (doCaption)
+        {
+            // text
+            g.drawString("(" + (int) (to.getX() - from.getX()) + " : " + (int) -(to.getY() - from.getY()) + ")",
+                    middleX, middleY);
+        }
+
+        // arrow
+        AffineTransform tx = new AffineTransform();
+        Line2D.Double line = new Line2D.Double(startX, startY, endX, endY);
+
+        Polygon arrowHead = new Polygon();
+        int size = worldRenderer.getScale() / 8;
+        arrowHead.addPoint(0, size);
+        arrowHead.addPoint(-size, -size);
+        arrowHead.addPoint(size, -size);
+
+        tx.setToIdentity();
+        double angle = Math.atan2(line.y2 - line.y1, line.x2 - line.x1);
+        tx.translate(line.x2, line.y2);
+        tx.rotate((angle - Math.PI / 2d));
+
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setTransform(tx);
+        g2d.fill(arrowHead);
+        g2d.dispose();
+    }
+
 }
