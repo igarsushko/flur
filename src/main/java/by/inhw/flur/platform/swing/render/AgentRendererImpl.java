@@ -39,18 +39,21 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         int x = getCoordinate(agent.x(), scale);
         int y = getCoordinate(agent.y(), scale);
 
-        //Debugger.log(agent.getName() + ": X (in game wold): ", agent.getPosition().getX());
-        //Debugger.log(agent.getName() + ": X (actual on screen): ", x);
-        //Debugger.log(agent.getName() + ": Y (in game wold): ", agent.getPosition().getY());
-        //Debugger.log(agent.getName() + ": Y (actual on screen): ", y);
+        // Debugger.log(agent.getName() + ": X (in game wold): ",
+        // agent.getPosition().getX());
+        // Debugger.log(agent.getName() + ": X (actual on screen): ", x);
+        // Debugger.log(agent.getName() + ": Y (in game wold): ",
+        // agent.getPosition().getY());
+        // Debugger.log(agent.getName() + ": Y (actual on screen): ", y);
 
-        Point v = agent.getKinematic().getVelocity();
-        DecimalFormat df = new DecimalFormat("#.###");
-        String xF = df.format(v.getX());
-        String yF = df.format(v.getY());
-        String zF = df.format(v.getZ());
-
-        Debugger.log(agent.getName() + " Velocity", "(" + xF + ", " + yF + ", " + zF + ")");
+        // Point v = agent.getKinematic().getVelocity();
+        // DecimalFormat df = new DecimalFormat("#.###");
+        // String xF = df.format(v.getX());
+        // String yF = df.format(v.getY());
+        // String zF = df.format(v.getZ());
+        //
+        // Debugger.log(agent.getName() + " Velocity", "(" + xF + ", " + yF +
+        // ", " + zF + ")");
 
         setAgentColor(g);
 
@@ -62,7 +65,7 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         int upperLeftX = x - scale / 2;
         int upperLeftY = y - scale / 2;
         g.fillRect(upperLeftX, upperLeftY, scale, scale);
-         drawPointer(upperLeftX, upperLeftY, g);
+        drawPointer(upperLeftX, upperLeftY, g);
         drawCenterOfMass(x, y, g);
         //drawPosition(x, y, g);
     }

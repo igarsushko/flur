@@ -8,7 +8,7 @@ import java.util.Set;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
-import by.inhw.flur.model.movement.SteeringOutput;
+import by.inhw.flur.model.movement.KinematicSteeringOutput;
 import by.inhw.flur.util.Timing;
 
 public class ControllerListener extends KeyAdapter
@@ -103,10 +103,10 @@ public class ControllerListener extends KeyAdapter
                         velocity.setX(1);
                     }
 
-                    SteeringOutput steering = null;
+                    KinematicSteeringOutput steering = null;
                     if (state != IDLE)
                     {
-                        steering = new SteeringOutput(velocity);
+                        steering = new KinematicSteeringOutput(velocity);
                         agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
                     }
 

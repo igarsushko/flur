@@ -5,10 +5,17 @@ import by.inhw.flur.model.movement.Point;
 
 public class VectorUtil
 {
+    /**
+     * Get a unit length vector that points into direction of orientaion.
+     * 
+     * @param orientation
+     *            in radians.
+     * @return unit length vector.
+     */
     public static Point orientation2dAsVector(double orientation)
     {
-        double x = Math.acos(orientation);
-        double y = Math.asin(orientation);
+        double x = Math.sin(orientation);
+        double y = Math.cos(orientation);
 
         return new Point(x, y);
     }

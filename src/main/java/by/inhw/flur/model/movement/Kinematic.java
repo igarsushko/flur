@@ -15,7 +15,7 @@ public class Kinematic extends Static
         this.velocity = velocity.createCopy();
     }
 
-    public void update(SteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
+    public void update(KinematicSteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
     {
         position.addToSelf(velocity.multiply(time * maxSpeed));
 

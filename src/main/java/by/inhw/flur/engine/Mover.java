@@ -1,7 +1,7 @@
 package by.inhw.flur.engine;
 
 import by.inhw.flur.model.Agent;
-import by.inhw.flur.model.movement.SteeringOutput;
+import by.inhw.flur.model.movement.KinematicSteeringOutput;
 import by.inhw.flur.util.Timing;
 
 public class Mover
@@ -19,7 +19,7 @@ public class Mover
                     {
                         if (!Timing.isPaused())
                         {
-                            SteeringOutput steering = agent.nextMove();
+                            KinematicSteeringOutput steering = agent.nextMove();
                             agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
                         }
 
