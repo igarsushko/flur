@@ -3,6 +3,7 @@ package by.inhw.flur.platform.swing.render;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.text.DecimalFormat;
 
 import javax.swing.JPanel;
 
@@ -35,13 +36,21 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
     {
         super.paintComponent(g);
 
-        int x = getCoordinate(agent.x());
-        int y = getCoordinate(agent.y());
+        int x = getCoordinate(agent.x(), scale);
+        int y = getCoordinate(agent.y(), scale);
 
         //Debugger.log(agent.getName() + ": X (in game wold): ", agent.getPosition().getX());
         //Debugger.log(agent.getName() + ": X (actual on screen): ", x);
         //Debugger.log(agent.getName() + ": Y (in game wold): ", agent.getPosition().getY());
         //Debugger.log(agent.getName() + ": Y (actual on screen): ", y);
+
+        Point v = agent.getKinematic().getVelocity();
+        DecimalFormat df = new DecimalFormat("#.###");
+        String xF = df.format(v.getX());
+        String yF = df.format(v.getY());
+        String zF = df.format(v.getZ());
+
+        Debugger.log(agent.getName() + " Velocity", "(" + xF + ", " + yF + ", " + zF + ")");
 
         setAgentColor(g);
 
@@ -53,8 +62,9 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         int upperLeftX = x - scale / 2;
         int upperLeftY = y - scale / 2;
         g.fillRect(upperLeftX, upperLeftY, scale, scale);
-        drawPointer(upperLeftX, upperLeftY, g);
+         drawPointer(upperLeftX, upperLeftY, g);
         drawCenterOfMass(x, y, g);
+        //drawPosition(x, y, g);
     }
 
     void setAgentColor(Graphics g)
@@ -74,7 +84,7 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
         }
     }
 
-    int getCoordinate(double value)
+    public static int getCoordinate(double value, int scale)
     {
         int valueInt = (int) value;
         double valueFraction = value - valueInt;
@@ -99,5 +109,18 @@ public class AgentRendererImpl extends JPanel implements AgentRenderer
     {
         g.setColor(Color.ORANGE);
         g.drawLine(x, y, x, y);
+    }
+
+    private void drawPosition(int x, int y, Graphics g)
+    {
+        Point p = agent.getPosition();
+
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        String xF = df.format(p.getX() - 2);
+        String yF = df.format(-(p.getY() - 15));
+
+        g.setColor(Color.ORANGE);
+        g.drawString("(" + xF + " : " + yF + ")", (int) (x + scale / 1.5), (int) (y - scale / 1.5));
     }
 }
