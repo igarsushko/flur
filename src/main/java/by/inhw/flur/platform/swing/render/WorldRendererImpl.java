@@ -57,8 +57,6 @@ public class WorldRendererImpl extends JLayeredPane implements WorldRenderer
     @Override
     protected void paintComponent(Graphics g)
     {
-        super.paintComponent(g);
-
         int[][] map = world.getMap();
 
         for (int y = 0; y < world.getHeight(); y++)

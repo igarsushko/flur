@@ -12,12 +12,13 @@
         <maven.compiler.plugin.java.version>1.7</maven.compiler.plugin.java.version>
         <maven.source.plugin.version>2.1.2</maven.source.plugin.version>
         <maven.release.plugin.version>2.3.2</maven.release.plugin.version>
+        <maven.jar.plugin.version>2.4</maven.jar.plugin.version>
     </properties>
 
     <scm>
         <connection>scm:git:https://github.com/igarsushko/flur.git</connection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <build>
         <plugins>
@@ -55,6 +56,21 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>by.inhw.flur.platform.swing.Flur</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
             </plugin>
 
             <plugin>

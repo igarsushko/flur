@@ -22,6 +22,8 @@ public class LevelLoader
                 String[] values = line.split("\\s");
                 valuesList.add(values);
             }
+            br.close();
+            fr.close();
         }
         catch (Exception e)
         {
