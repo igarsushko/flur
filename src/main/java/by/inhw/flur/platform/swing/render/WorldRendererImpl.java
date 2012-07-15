@@ -16,6 +16,9 @@ public class WorldRendererImpl extends JLayeredPane implements WorldRenderer
 {
     private World world;
     private int scale;
+    private int worldWidth;
+    private int worldHeight;
+    private int[][] worldMap;
     private int actualWidth;
     private int actualHeight;
 
@@ -27,9 +30,12 @@ public class WorldRendererImpl extends JLayeredPane implements WorldRenderer
     public void setWorld(World world)
     {
         this.world = world;
+        this.worldWidth = world.getWidth();
+        this.worldHeight = world.getHeight();
+        this.worldMap = world.getMap();
 
-        actualWidth = scale * world.getWidth();
-        actualHeight = scale * world.getHeight();
+        actualWidth = scale * worldWidth;
+        actualHeight = scale * worldHeight;
 
         setPreferredSize(new Dimension(actualWidth, actualHeight));
         setBounds(0, 0, actualWidth, actualHeight);
@@ -57,13 +63,13 @@ public class WorldRendererImpl extends JLayeredPane implements WorldRenderer
     @Override
     protected void paintComponent(Graphics g)
     {
-        int[][] map = world.getMap();
+        super.paintComponent(g);
 
-        for (int y = 0; y < world.getHeight(); y++)
+        for (int y = 0; y < worldHeight; y++)
         {
-            for (int x = 0; x < world.getWidth(); x++)
+            for (int x = 0; x < worldWidth; x++)
             {
-                int value = map[y][x];
+                int value = worldMap[y][x];
                 if (value == WorldPart.FREE_SPACE)
                 {
                     g.setColor(Color.GRAY);
