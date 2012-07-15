@@ -3,7 +3,10 @@ package by.inhw.flur.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import by.inhw.flur.model.movement.Point;
+import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.render.WorldRenderer;
+import by.inhw.flur.util.Timing;
 
 public class World extends WorldPart
 {
@@ -37,6 +40,47 @@ public class World extends WorldPart
     public void renderWorld()
     {
         worldRenderer.renderWorld();
+    }
+
+    public void bringWorldToLive()
+    {
+        new Thread()
+        {
+            public void run()
+            {
+                setName("world");
+                while (true)
+                {
+                    try
+                    {
+                        if (!Timing.isPaused())
+                        {
+                            for (Agent agent : agents.values())
+                            {
+                                SteeringOutput steering = agent.nextMove();
+                                //applyForces(steering);
+                                agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
+                            }
+                        }
+
+                        Thread.sleep(Timing.FRAME_TIME_MILLIS);
+                    }
+                    catch (InterruptedException e1)
+                    {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
+
+    private void applyForces(SteeringOutput steering)
+    {
+        Point velocity = steering.getVelocity();
+
+        // friction force
+        velocity.decreaze(0.75);
+        steering.setVelocity(velocity);
     }
 
     public Agent registerAgent(Agent agent)

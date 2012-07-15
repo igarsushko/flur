@@ -8,7 +8,6 @@ import java.util.Set;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
-import by.inhw.flur.model.movement.KinematicSteeringOutput;
 import by.inhw.flur.util.Timing;
 
 public class ControllerListener extends KeyAdapter
@@ -103,11 +102,14 @@ public class ControllerListener extends KeyAdapter
                         velocity.setX(1);
                     }
 
-                    KinematicSteeringOutput steering = null;
                     if (state != IDLE)
                     {
-                        steering = new KinematicSteeringOutput(velocity);
-                        agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
+                        Point currVelocity = agent.getKinematic().getVelocity();
+                        currVelocity.set(velocity.multiply(agent.getMaxSpeed()));
+                    }
+                    else
+                    {
+                        agent.getKinematic().getVelocity().set(new Point());
                     }
 
                     try

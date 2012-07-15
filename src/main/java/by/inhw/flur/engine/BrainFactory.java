@@ -1,117 +1,88 @@
 package by.inhw.flur.engine;
 
 import by.inhw.flur.model.Agent;
-import by.inhw.flur.model.movement.KinematicSteeringOutput;
 import by.inhw.flur.model.movement.Point;
-import by.inhw.flur.util.Rand;
-import by.inhw.flur.util.VectorUtil;
+import by.inhw.flur.model.movement.SteeringOutput;
 
 public class BrainFactory
 {
-    public static Brain kinematikSeek(final Agent persuader, final Agent target)
+    public static Brain seek(final Agent persuader, final Agent target)
     {
         Brain brain = new Brain()
         {
-            public KinematicSteeringOutput nextMove()
+            public SteeringOutput nextMove()
             {
                 Point velocity = target.getPosition().substract(persuader.getPosition());
                 velocity.normalize();
 
-                return new KinematicSteeringOutput(velocity);
+                return new SteeringOutput(velocity);
             }
         };
 
         return brain;
     }
 
-    public static Brain kinematicSeekAndArrive(final Agent persuader, final Agent target)
+    public static Brain seekAndArrive(final Agent persuader, final Agent target)
     {
         Brain brain = new Brain()
         {
-            public KinematicSteeringOutput nextMove()
+            public SteeringOutput nextMove()
             {
                 double arriveRadius = 2;
+                double slowRadius = 7;
+                double timeToTarget = 0.1;
 
-                Point velocity = target.getPosition().substract(persuader.getPosition());
+                double maxSpeed = persuader.getMaxSpeed();
+                double finalSpeed = 0;
 
-                double length = velocity.length();
-                if (length < arriveRadius)
+                Point direction = target.getPosition().substract(persuader.getPosition());
+
+                double distance = direction.length();
+
+                if (distance <= arriveRadius)
                 {
-                    return new KinematicSteeringOutput(new Point());
+                    return new SteeringOutput(new Point());
                 }
-                else
+                else if (distance > arriveRadius && distance < slowRadius)
                 {
-                    velocity.normalize();
-                    return new KinematicSteeringOutput(velocity);
+                    finalSpeed = maxSpeed * distance / slowRadius;
                 }
+                else if (distance >= slowRadius)
+                {
+                    finalSpeed = maxSpeed;
+                }
+
+                Point finalVelocity = direction.createCopy();
+                finalVelocity.normalize();
+                finalVelocity.multiplySelf(finalSpeed);
+
+                // Acceleration tries to get to the target velocity
+                finalVelocity.substractFromSelf(persuader.getKinematic().getVelocity());
+                finalVelocity.devideSelf(timeToTarget);
+
+                double maxAccel = 30;
+                // # Check if the acceleration is too fast
+                if (finalVelocity.length() > maxAccel)
+                {
+                    finalVelocity.normalize();
+                    finalVelocity.multiplySelf(maxAccel);
+                }
+
+                return new SteeringOutput(finalVelocity);
             }
         };
 
         return brain;
     }
 
-    public static Brain kinematicFlee(final Agent agent, final Agent persuader)
+    public static Brain puppetBrain(final Agent agent)
     {
         Brain brain = new Brain()
         {
-            public KinematicSteeringOutput nextMove()
+            public SteeringOutput nextMove()
             {
-                Point velocity = agent.getPosition().substract(persuader.getPosition());
-                velocity.normalize();
-
-                return new KinematicSteeringOutput(velocity);
-            }
-        };
-
-        return brain;
-    }
-
-    public static Brain kinematicWander(final Agent agent)
-    {
-        Brain brain = new CachedBrain(20)
-        {
-            @Override
-            public KinematicSteeringOutput doNextMove()
-            {
-                double orientation = agent.getKinematic().getOrientation();
-                double newOrientation = (orientation + Rand.randomBinomial());
-
-                Point velocity = VectorUtil.orientation2dAsVector(newOrientation);
-                velocity.normalize();
-
-                return new KinematicSteeringOutput(velocity);
-            }
-        };
-
-        return brain;
-    }
-
-    public static Brain kinematicMoveRandomly()
-    {
-        Brain brain = new CachedBrain(100)
-        {
-            public KinematicSteeringOutput doNextMove()
-            {
-                Point velocity = new Point();
-                double d = Math.random();
-                if (d > 0 && d <= 0.25)
-                {
-                    velocity.setY(-1);
-                }
-                else if (d > 0.25 && d <= 0.5)
-                {
-                    velocity.setY(1);
-                }
-                else if (d > 0.5 && d <= 0.75)
-                {
-                    velocity.setX(1);
-                }
-                else if (d > 0.75 && d <= 1)
-                {
-                    velocity.setX(-1);
-                }
-
-                return new KinematicSteeringOutput(velocity);
+                Point currVelocity = agent.getKinematic().getVelocity();
+                return new SteeringOutput(currVelocity);
             }
         };
 

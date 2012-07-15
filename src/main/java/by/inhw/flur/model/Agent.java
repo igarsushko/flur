@@ -3,7 +3,7 @@ package by.inhw.flur.model;
 import by.inhw.flur.engine.Brain;
 import by.inhw.flur.model.movement.Kinematic;
 import by.inhw.flur.model.movement.Point;
-import by.inhw.flur.model.movement.KinematicSteeringOutput;
+import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.render.AgentRenderer;
 
 public class Agent extends WorldPart
@@ -36,12 +36,12 @@ public class Agent extends WorldPart
         kinematic.setPosition(position);
     }
 
-    public KinematicSteeringOutput nextMove()
+    public SteeringOutput nextMove()
     {
         return brain.nextMove();
     }
 
-    public void updateKinematic(KinematicSteeringOutput steering, double timeInSeconds)
+    public void updateKinematic(SteeringOutput steering, double timeInSeconds)
     {
         kinematic.update(steering, timeInSeconds, maxSpeed, maxRotationSpeed);
         world.normalizeCoordinates2D(this);

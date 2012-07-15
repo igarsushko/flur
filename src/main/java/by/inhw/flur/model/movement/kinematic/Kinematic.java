@@ -1,9 +1,12 @@
-package by.inhw.flur.model.movement;
+package by.inhw.flur.model.movement.kinematic;
 
+import by.inhw.flur.model.movement.Point;
+import by.inhw.flur.model.movement.Static;
 import by.inhw.flur.util.VectorUtil;
 
 /**
- * Velocities are given in meters per second.
+ * Velocities are given in meters per second. Kinematic for simple cases without
+ * accelerations.
  */
 public class Kinematic extends Static
 {
@@ -15,25 +18,7 @@ public class Kinematic extends Static
         this.velocity = velocity.createCopy();
     }
 
-    public void update(SteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
-    {
-        // update position
-        position.addToSelf(velocity.multiply(time));
-
-        // update velocity
-        if (steering.velocity.isNonZero())
-        {
-            velocity.addToSelf(steering.velocity.multiply(time));
-        }
-        // if steering has zero velocity, the some forces decreases existing
-        // velocity
-        else
-        {
-            velocity.devideSelf(1.25);
-        }
-    }
-
-    public void kinematicUpdate(SteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
+    public void update(KinematicSteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
     {
         position.addToSelf(velocity.multiply(time * maxSpeed));
 

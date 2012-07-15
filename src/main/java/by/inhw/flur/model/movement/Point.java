@@ -83,6 +83,60 @@ public final class Point
         this.z -= point.z;
     }
 
+    private double decreezeToZero(double value, double decreazeOn)
+    {
+        if (value < 0)
+        {
+            double newValue = value + decreazeOn;
+            if (newValue > 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return newValue;
+            }
+        }
+        else
+        {
+            double newValue = value - decreazeOn;
+            if (newValue < 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return newValue;
+            }
+        }
+    }
+
+    private double decreeze(double value, double decreazeOn)
+    {
+        if (value < 0)
+        {
+            return value + decreazeOn;
+        }
+        else
+        {
+            return value - decreazeOn;
+        }
+    }
+
+    public void decreazeToZero(double decreazeOn)
+    {
+        x = decreezeToZero(x, decreazeOn);
+        y = decreezeToZero(y, decreazeOn);
+        z = decreezeToZero(z, decreazeOn);
+    }
+
+    public void decreaze(double decreazeOn)
+    {
+        x = decreeze(x, decreazeOn);
+        y = decreeze(y, decreazeOn);
+        z = decreeze(z, decreazeOn);
+    }
+
     /**
      * Creates copy of self, multiplies copy on scalar, and returns copy.
      */
@@ -122,9 +176,12 @@ public final class Point
     public void normalize()
     {
         double length = length();
-        x /= length;
-        y /= length;
-        z /= length;
+        if (length != 0)
+        {
+            x /= length;
+            y /= length;
+            z /= length;
+        }
     }
 
     public double length()

@@ -2,7 +2,7 @@ package by.inhw.flur.util;
 
 public class Timing
 {
-    public static final int FRAME_TIME_MILLIS = 25;
+    public static final int FRAME_TIME_MILLIS = 15;
     public static final double FRAME_TIME_SEC = (double) FRAME_TIME_MILLIS / 1000.0;
 
     private long frameNumber = 0;

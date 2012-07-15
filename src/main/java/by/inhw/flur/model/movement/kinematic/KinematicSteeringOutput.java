@@ -1,4 +1,6 @@
-package by.inhw.flur.model.movement;
+package by.inhw.flur.model.movement.kinematic;
+
+import by.inhw.flur.model.movement.Point;
 
 /**
  * Kinematic movements don't take into account aceleration. So as result we

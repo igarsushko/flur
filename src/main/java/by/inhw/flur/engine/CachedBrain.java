@@ -1,6 +1,6 @@
 package by.inhw.flur.engine;
 
-import by.inhw.flur.model.movement.KinematicSteeringOutput;
+import by.inhw.flur.model.movement.SteeringOutput;
 
 /**
  * Used to repeat next move defined number of times. Implemented to get smooth
@@ -11,18 +11,18 @@ public abstract class CachedBrain implements Brain
 {
     int count = 0;
     int maxCount;
-    KinematicSteeringOutput steeringCached;
+    SteeringOutput steeringCached;
 
-    public abstract KinematicSteeringOutput doNextMove();
+    public abstract SteeringOutput doNextMove();
 
     public CachedBrain(int repeatFrames)
     {
         this.maxCount = repeatFrames;
     }
 
-    public KinematicSteeringOutput nextMove()
+    public SteeringOutput nextMove()
     {
-        KinematicSteeringOutput steering = null;
+        SteeringOutput steering = null;
         if (count == 0 || count == maxCount)
         {
             steeringCached = doNextMove();
