@@ -68,6 +68,11 @@ public class Agent extends WorldPart
         return kinematic.getOrientation();
     }
 
+    public double getRotation()
+    {
+        return kinematic.getRotation();
+    }
+
     public Point getPosition()
     {
         return kinematic.getPosition();

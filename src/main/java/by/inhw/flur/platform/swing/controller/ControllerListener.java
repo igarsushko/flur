@@ -85,27 +85,34 @@ public class ControllerListener extends KeyAdapter
                 while (true)
                 {
                     Point velocity = new Point();
+                    double orientation = 0;
                     if (state == UP)
                     {
                         velocity.setY(-1);
+                        orientation = Math.toRadians(-180);
                     }
                     else if (state == DOWN)
                     {
                         velocity.setY(1);
+                        orientation = Math.toRadians(0);
                     }
                     else if (state == LEFT)
                     {
                         velocity.setX(-1);
+                        orientation = Math.toRadians(-90);
                     }
                     else if (state == RIGHT)
                     {
                         velocity.setX(1);
+                        orientation = Math.toRadians(90);
                     }
 
                     if (state != IDLE)
                     {
                         Point currVelocity = agent.getKinematic().getVelocity();
                         currVelocity.set(velocity.multiply(agent.getMaxSpeed()));
+                        
+                        agent.getKinematic().setOrientation(orientation);
                     }
                     else
                     {

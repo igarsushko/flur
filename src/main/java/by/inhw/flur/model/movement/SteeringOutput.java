@@ -7,10 +7,12 @@ package by.inhw.flur.model.movement;
 public class SteeringOutput
 {
     Point velocity;
+    double rotation;
 
-    public SteeringOutput(Point velocity)
+    public SteeringOutput(Point velocity, double rotation)
     {
         this.velocity = velocity.createCopy();
+        this.rotation = rotation;
     }
 
     public void setVelocity(Point velocity)

@@ -6,7 +6,6 @@ import java.util.Properties;
 import javax.swing.JFrame;
 
 import by.inhw.flur.engine.BrainFactory;
-import by.inhw.flur.engine.KinematicBrainFactory;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.World;
 import by.inhw.flur.model.movement.Point;
@@ -44,7 +43,7 @@ public class Flur
         ControllerListener keyListener = new ControllerListener(player);
         frame.addKeyListener(keyListener);
 
-        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 5, 6));
+        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 6));
         bot1.setPosition(new Point(4, 6));
         bot1.setBrain(BrainFactory.seekAndArrive(bot1, player));
 

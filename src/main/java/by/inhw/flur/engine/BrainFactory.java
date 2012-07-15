@@ -15,7 +15,7 @@ public class BrainFactory
                 Point velocity = target.getPosition().substract(persuader.getPosition());
                 velocity.normalize();
 
-                return new SteeringOutput(velocity);
+                return new SteeringOutput(velocity, 0);
             }
         };
 
@@ -28,6 +28,8 @@ public class BrainFactory
         {
             public SteeringOutput nextMove()
             {
+                double rotation = Align.getAlign(persuader, target);
+
                 double arriveRadius = 2;
                 double slowRadius = 7;
                 double timeToTarget = 0.1;
@@ -41,7 +43,7 @@ public class BrainFactory
 
                 if (distance <= arriveRadius)
                 {
-                    return new SteeringOutput(new Point());
+                    return new SteeringOutput(new Point(), rotation);
                 }
                 else if (distance > arriveRadius && distance < slowRadius)
                 {
@@ -68,7 +70,7 @@ public class BrainFactory
                     finalVelocity.multiplySelf(maxAccel);
                 }
 
-                return new SteeringOutput(finalVelocity);
+                return new SteeringOutput(finalVelocity, rotation);
             }
         };
 
@@ -82,7 +84,7 @@ public class BrainFactory
             public SteeringOutput nextMove()
             {
                 Point currVelocity = agent.getKinematic().getVelocity();
-                return new SteeringOutput(currVelocity);
+                return new SteeringOutput(currVelocity, 0);
             }
         };
 

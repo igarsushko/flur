@@ -8,6 +8,8 @@ import by.inhw.flur.util.VectorUtil;
 public class Kinematic extends Static
 {
     Point velocity;
+    // angular acceleration, rad per sec
+    double rotation;
 
     public Kinematic(Point position, double orientation, Point velocity)
     {
@@ -31,6 +33,18 @@ public class Kinematic extends Static
         {
             velocity.devideSelf(1.25);
         }
+
+        // orientation
+        orientation += rotation * time;
+
+        if (steering.rotation != 0)
+        {
+            rotation += steering.rotation * time;
+        }
+        else
+        {
+            rotation /= 1.25;
+        }
     }
 
     public void kinematicUpdate(SteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
@@ -53,6 +67,11 @@ public class Kinematic extends Static
     public Point getVelocity()
     {
         return velocity;
+    }
+
+    public double getRotation()
+    {
+        return rotation;
     }
 
     public void setVelocity(Point velocity)

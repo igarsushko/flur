@@ -8,11 +8,11 @@ import by.inhw.flur.util.VectorUtil;
  * Velocities are given in meters per second. Kinematic for simple cases without
  * accelerations.
  */
-public class Kinematic extends Static
+public class SimpleKinematic extends Static
 {
     Point velocity;
 
-    public Kinematic(Point position, double orientation, Point velocity)
+    public SimpleKinematic(Point position, double orientation, Point velocity)
     {
         super(position, orientation);
         this.velocity = velocity.createCopy();

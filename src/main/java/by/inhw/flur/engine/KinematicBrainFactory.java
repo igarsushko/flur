@@ -17,7 +17,7 @@ public class KinematicBrainFactory
                 Point velocity = target.getPosition().substract(persuader.getPosition());
                 velocity.normalize();
 
-                return new SteeringOutput(velocity);
+                return new SteeringOutput(velocity, 0);
             }
         };
 
@@ -37,12 +37,12 @@ public class KinematicBrainFactory
                 double length = velocity.length();
                 if (length < arriveRadius)
                 {
-                    return new SteeringOutput(new Point());
+                    return new SteeringOutput(new Point(), 0);
                 }
                 else
                 {
                     velocity.normalize();
-                    return new SteeringOutput(velocity);
+                    return new SteeringOutput(velocity, 0);
                 }
             }
         };
@@ -59,7 +59,7 @@ public class KinematicBrainFactory
                 Point velocity = agent.getPosition().substract(persuader.getPosition());
                 velocity.normalize();
 
-                return new SteeringOutput(velocity);
+                return new SteeringOutput(velocity, 0);
             }
         };
 
@@ -79,7 +79,7 @@ public class KinematicBrainFactory
                 Point velocity = VectorUtil.orientation2dAsVector(newOrientation);
                 velocity.normalize();
 
-                return new SteeringOutput(velocity);
+                return new SteeringOutput(velocity, 0);
             }
         };
 
@@ -111,7 +111,7 @@ public class KinematicBrainFactory
                     velocity.setX(-1);
                 }
 
-                return new SteeringOutput(velocity);
+                return new SteeringOutput(velocity, 0);
             }
         };
 
@@ -125,7 +125,7 @@ public class KinematicBrainFactory
             public SteeringOutput nextMove()
             {
                 Point currVelocity = agent.getKinematic().getVelocity();
-                return new SteeringOutput(currVelocity);
+                return new SteeringOutput(currVelocity, 0);
             }
         };
 
