@@ -1,4 +1,4 @@
-package by.inhw.flur.engine;
+package by.inhw.flur.engine.behave;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.util.VectorUtil;
@@ -7,8 +7,8 @@ public class Align
 {
     public static double getAlign(Agent agent, Agent target)
     {
-        double maxAngularAcceleration = 50;
-        double maxRotation = 8;
+        double maxRotation = agent.getMaxRotationSpeed();
+        double maxAngularAcceleration = agent.getMaxAngularAcceleration();
 
         double targetRadius = 0;
         double slowRadius = 2;

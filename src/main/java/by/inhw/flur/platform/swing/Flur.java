@@ -37,15 +37,15 @@ public class Flur
         World world = new World(map, renderer);
         world.renderWorld();
 
-        Agent player = world.registerAgent(new Agent("player", "red", 6, 7));
+        Agent player = world.registerAgent(new Agent("player", "red", 6, 7, 8, 40));
         player.setPosition(new Point(12, 12));
         player.setBrain(BrainFactory.puppetBrain(player));
         ControllerListener keyListener = new ControllerListener(player);
         frame.addKeyListener(keyListener);
 
-        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 6));
-        bot1.setPosition(new Point(4, 6));
-        bot1.setBrain(BrainFactory.seekAndArrive(bot1, player));
+        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 2, 50, 10, 40));
+        bot1.setPosition(new Point(7, 7));
+        bot1.setBrain(BrainFactory.evadeAndAlign(bot1, player));
 
         // Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 2, 3));
         // bot2.setPosition(new Point(6, 9));

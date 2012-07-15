@@ -14,15 +14,20 @@ public class Agent extends WorldPart
     Kinematic kinematic;
     AgentRenderer renderer;
     double maxSpeed;
+    double maxAcceleration;
     double maxRotationSpeed;
+    double maxAngularAcceleration;
     World world;
 
-    public Agent(String name, String color, double maxSpeed, double maxRotationSpeed)
+    public Agent(String name, String color, double maxSpeed, double maxAcceleration, double maxRotationSpeed,
+            double maxAngularAcceleration)
     {
         this.name = name;
         this.color = color;
         this.maxSpeed = maxSpeed;
+        this.maxAcceleration = maxAcceleration;
         this.maxRotationSpeed = maxRotationSpeed;
+        this.maxAngularAcceleration = maxAngularAcceleration;
         this.kinematic = new Kinematic(new Point(), 0, new Point());
     }
 
@@ -78,6 +83,11 @@ public class Agent extends WorldPart
         return kinematic.getPosition();
     }
 
+    public Point getVelocity()
+    {
+        return kinematic.getVelocity();
+    }
+
     public void setWorld(World world)
     {
         this.world = world;
@@ -101,5 +111,20 @@ public class Agent extends WorldPart
     public double getMaxSpeed()
     {
         return maxSpeed;
+    }
+
+    public double getMaxAcceleration()
+    {
+        return maxAcceleration;
+    }
+
+    public double getMaxRotationSpeed()
+    {
+        return maxRotationSpeed;
+    }
+
+    public double getMaxAngularAcceleration()
+    {
+        return maxAngularAcceleration;
     }
 }

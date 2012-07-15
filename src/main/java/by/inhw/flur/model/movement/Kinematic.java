@@ -26,9 +26,13 @@ public class Kinematic extends Static
         if (steering.velocity.isNonZero())
         {
             velocity.addToSelf(steering.velocity.multiply(time));
+            if (velocity.length() > maxSpeed)
+            {
+                velocity.normalize();
+                velocity.multiplySelf(maxSpeed);
+            }
         }
-        // if steering has zero velocity, the some forces decreases existing
-        // velocity
+        // some forces decrease existing
         else
         {
             velocity.devideSelf(1.25);
@@ -40,6 +44,10 @@ public class Kinematic extends Static
         if (steering.rotation != 0)
         {
             rotation += steering.rotation * time;
+            if (rotation > maxRotationSpeed)
+            {
+                rotation = maxRotationSpeed;
+            }
         }
         else
         {
@@ -47,6 +55,10 @@ public class Kinematic extends Static
         }
     }
 
+    /**
+     * The simple version of update, directly update position from velocity and
+     * face in the direction of movement.
+     */
     public void kinematicUpdate(SteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
     {
         position.addToSelf(velocity.multiply(time * maxSpeed));
