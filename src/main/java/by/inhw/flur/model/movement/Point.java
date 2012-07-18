@@ -186,7 +186,12 @@ public final class Point
 
     public double length()
     {
-        return Math.sqrt((x * x) + (y * y) + (z * z));
+        return Math.sqrt(squareLength());
+    }
+
+    public double squareLength()
+    {
+        return (x * x) + (y * y) + (z * z);
     }
 
     /**

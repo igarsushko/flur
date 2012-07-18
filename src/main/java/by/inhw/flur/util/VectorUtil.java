@@ -23,7 +23,7 @@ public class VectorUtil
     /**
      * Gets 2D orientation in velocity direction.
      */
-    public static double getOrientationFromVelocity(Point velocity)
+    public static double getOrientationFromVector(Point velocity)
     {
         return Math.atan2(velocity.getX(), velocity.getY());
     }
@@ -46,5 +46,22 @@ public class VectorUtil
         }
 
         return newOrientation;
+    }
+
+    /**
+     * Return the nearest point on line p1->p2, from point p3.
+     */
+    public static Point nearestPoint(Point p1, Point p2, Point p3)
+    {
+        Point p1p2Direction = p2.substract(p1);
+
+        double u = (p3.getX() - p1.getX()) * (p2.getX() - p1.getX()) + (p3.getY() - p1.getY())
+                * (p2.getY() - p1.getY());
+        u /= p1p2Direction.squareLength();
+
+        double x = p1.getX() + u * (p2.getX() - p1.getX());
+        double y = p1.getY() + u * (p2.getY() - p1.getY());
+
+        return new Point(x, y);
     }
 }

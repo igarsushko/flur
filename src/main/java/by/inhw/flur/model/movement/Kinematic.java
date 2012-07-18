@@ -66,7 +66,7 @@ public class Kinematic extends Static
         // get orientation from velocity
         if (steering.velocity.isNonZero())
         {
-            double desiredOrientation = VectorUtil.getOrientationFromVelocity(steering.velocity);
+            double desiredOrientation = VectorUtil.getOrientationFromVector(steering.velocity);
             double diff = desiredOrientation - orientation;
             diff = VectorUtil.normalizeOrientation(diff);
             orientation += diff * maxRotationSpeed * time;

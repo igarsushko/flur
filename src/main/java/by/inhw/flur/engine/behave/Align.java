@@ -3,9 +3,17 @@ package by.inhw.flur.engine.behave;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.util.VectorUtil;
 
+/**
+ * Returns angular acceleration to align facing with target.
+ */
 public class Align
 {
     public static double getAlign(Agent agent, Agent target)
+    {
+        return Align.getAlign(agent, target.getOrientation());
+    }
+
+    public static double getAlign(Agent agent, double targetOrientation)
     {
         double maxRotation = agent.getMaxRotationSpeed();
         double maxAngularAcceleration = agent.getMaxAngularAcceleration();
@@ -14,7 +22,7 @@ public class Align
         double slowRadius = 2;
         double timeToTarget = 0.01;
 
-        double rotation = target.getOrientation() - agent.getOrientation();
+        double rotation = targetOrientation - agent.getOrientation();
 
         rotation = VectorUtil.normalizeOrientation(rotation);
         double rotationSize = Math.abs(rotation);

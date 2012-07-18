@@ -43,9 +43,15 @@ public class Flur
         ControllerListener keyListener = new ControllerListener(player);
         frame.addKeyListener(keyListener);
 
-        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 2, 50, 10, 40));
-        bot1.setPosition(new Point(7, 7));
-        bot1.setBrain(BrainFactory.evadeAndAlign(bot1, player));
+        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 6, 50, 10, 10));
+        bot1.setPosition(new Point(10, 10));
+        bot1.setBrain(BrainFactory.wander(bot1));
+
+        // Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 2, 50, 10,
+        // 40));
+        // bot1.setPosition(new Point(10, 10));
+        // bot1.setBrain(BrainFactory.pursueAndLookWhereYoureGoing(bot1,
+        // player));
 
         // Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 2, 3));
         // bot2.setPosition(new Point(6, 9));
