@@ -15,7 +15,7 @@ public class Timing
 
     private static boolean isPaused = false;
 
-    private static final double startTime = System.currentTimeMillis();
+    private final double startTime = System.currentTimeMillis();
 
     // Updates the global frame information. Should be called once per frame.
     public void update()
@@ -42,7 +42,8 @@ public class Timing
                 averageFrameDuration *= 0.99;
                 averageFrameDuration += 0.01 * lastFrameDuration;
 
-                fps = (float) (1000 / averageFrameDuration);
+                // fps = (float) (1000 / averageFrameDuration);
+                fps = (float) (1000 / lastFrameDuration);
             }
         }
     }
@@ -60,5 +61,10 @@ public class Timing
     public static void setPaused(boolean isPaused)
     {
         Timing.isPaused = isPaused;
+    }
+
+    public double getFPS()
+    {
+        return fps;
     }
 }

@@ -8,6 +8,11 @@ public class Arrive
 {
     public static SteeringOutput getSteering(Agent agent, Agent target)
     {
+        return Arrive.getSteering(agent, target.getPosition());
+    }
+
+    public static SteeringOutput getSteering(Agent agent, Point targetPosition)
+    {
         double arriveRadius = 2;
         double slowRadius = 7;
         double timeToTarget = 0.1;
@@ -15,7 +20,7 @@ public class Arrive
         double maxSpeed = agent.getMaxSpeed();
         double finalSpeed = 0;
 
-        Point direction = target.getPosition().substract(agent.getPosition());
+        Point direction = targetPosition.substract(agent.getPosition());
 
         double distance = direction.length();
         if (distance <= arriveRadius)

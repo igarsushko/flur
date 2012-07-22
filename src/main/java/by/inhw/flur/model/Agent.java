@@ -1,5 +1,8 @@
 package by.inhw.flur.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import by.inhw.flur.engine.Brain;
 import by.inhw.flur.model.movement.Kinematic;
 import by.inhw.flur.model.movement.Point;
@@ -8,16 +11,17 @@ import by.inhw.flur.render.AgentRenderer;
 
 public class Agent extends WorldPart
 {
-    String name;
-    String color;
-    Brain brain;
-    Kinematic kinematic;
-    AgentRenderer renderer;
-    double maxSpeed;
-    double maxAcceleration;
-    double maxRotationSpeed;
-    double maxAngularAcceleration;
-    World world;
+    private String name;
+    private String color;
+    private Brain brain;
+    private Kinematic kinematic;
+    private AgentRenderer renderer;
+    private double maxSpeed;
+    private double maxAcceleration;
+    private double maxRotationSpeed;
+    private double maxAngularAcceleration;
+    private World world;
+    private Map<String, Object> data;
 
     public Agent(String name, String color, double maxSpeed, double maxAcceleration, double maxRotationSpeed,
             double maxAngularAcceleration)
@@ -29,6 +33,7 @@ public class Agent extends WorldPart
         this.maxRotationSpeed = maxRotationSpeed;
         this.maxAngularAcceleration = maxAngularAcceleration;
         this.kinematic = new Kinematic(new Point(), 0, new Point());
+        this.data = new HashMap<String, Object>();
     }
 
     public void setBrain(Brain brain)
@@ -126,5 +131,15 @@ public class Agent extends WorldPart
     public double getMaxAngularAcceleration()
     {
         return maxAngularAcceleration;
+    }
+
+    public void putData(String id, Object value)
+    {
+        data.put(id, value);
+    }
+
+    public Object getData(String id)
+    {
+        return data.get(id);
     }
 }

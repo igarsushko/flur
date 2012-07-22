@@ -5,6 +5,7 @@ import java.util.Map;
 
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
+import by.inhw.flur.platform.swing.Debugger;
 import by.inhw.flur.render.WorldRenderer;
 import by.inhw.flur.util.Timing;
 
@@ -14,6 +15,7 @@ public class World extends WorldPart
 
     private final int[][] map;
     private WorldRenderer worldRenderer;
+    private Timing timing;
 
     public int[][] getMap()
     {
@@ -44,6 +46,7 @@ public class World extends WorldPart
 
     public void bringWorldToLive()
     {
+        timing = new Timing();
         new Thread()
         {
             public void run()
@@ -53,12 +56,14 @@ public class World extends WorldPart
                 {
                     try
                     {
+                        timing.update();
+                        Debugger.log("FPS ", timing.getFPS());
                         if (!Timing.isPaused())
                         {
                             for (Agent agent : agents.values())
                             {
                                 SteeringOutput steering = agent.nextMove();
-                                //applyForces(steering);
+                                // applyForces(steering);
                                 agent.updateKinematic(steering, Timing.FRAME_TIME_SEC);
                             }
                         }

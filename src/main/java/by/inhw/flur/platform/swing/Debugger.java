@@ -7,8 +7,10 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
@@ -17,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import by.inhw.flur.engine.behave.LinePath;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.platform.swing.render.AgentRendererImpl;
 import by.inhw.flur.platform.swing.render.WorldRendererImpl;
@@ -29,6 +32,9 @@ public class Debugger
     private static JPanel loggingPanel;
     private static JPanel debugLayer;
     private static boolean on = true;
+    private static List<LinePath> paths = new ArrayList<LinePath>();
+    private static Map<String, LinePath.Line> vectors = new HashMap<String, LinePath.Line>();
+    private static Map<String, Point> points = new HashMap<String, Point>();
 
     // in milliseconds
     private static int statInterval = 1000;
@@ -60,6 +66,11 @@ public class Debugger
         debugLayer.repaint();
     }
 
+    public static void drawPath(LinePath path)
+    {
+        paths.add(path);
+    }
+
     public static void setFrame(JFrame jframe)
     {
         Debugger.frame = jframe;
@@ -79,7 +90,7 @@ public class Debugger
         labels.put(name, label);
 
         int count = labels.size();
-        loggingPanel.setBounds(5, 5, 200, 20 * count);
+        loggingPanel.setBounds(5, 5, 1000, 20 * count);
         loggingPanel.add(label);
         loggingPanel.repaint();
         return label;
@@ -105,6 +116,16 @@ public class Debugger
         }
     }
 
+    public static void logVector(String id, LinePath.Line vector)
+    {
+        vectors.put(id, vector);
+    }
+
+    public static void logPoint(String id, Point point)
+    {
+        points.put(id, point);
+    }
+
     private static String format(Object value)
     {
         String result = null;
@@ -113,6 +134,12 @@ public class Debugger
         {
             Double d = (Double) value;
             result = decimalFormat.format(d);
+        }
+        else if (value instanceof Point)
+        {
+            Point p = (Point) value;
+            result = "( " + decimalFormat.format(p.getX()) + ": " + decimalFormat.format(p.getY()) + " : "
+                    + decimalFormat.format(p.getZ()) + " )";
         }
         else
         {
@@ -175,7 +202,36 @@ public class Debugger
                 Graphics2D g2d = (Graphics2D) g;
 
                 // paintGlobalDebugInfo(g2d, worldRenderer.getScale());
-                // drawVector(new Point(6, 5), new Point(2, 7), g2d);
+
+                // draw path
+                if (paths.size() > 0)
+                {
+                    for (LinePath path : paths)
+                    {
+                        for (LinePath.Line line : path.getLines())
+                        {
+                            drawVector(line.getBegin(), line.getEnd(), g2d, false);
+                        }
+                    }
+                }
+
+                // draw vectors
+                if (vectors.size() > 0)
+                {
+                    for (LinePath.Line line : vectors.values())
+                    {
+                        drawVector(line.getBegin(), line.getEnd(), g2d, false);
+                    }
+                }
+
+                // draw points
+                if (points.size() > 0)
+                {
+                    for (Point point : points.values())
+                    {
+                        drawPoint(point, g2d);
+                    }
+                }
             }
         };
     }
@@ -205,6 +261,20 @@ public class Debugger
         // arrow
         g.drawLine(endX, endY, endX - scale / 10, endY - scale / 5);
         g.drawLine(endX, endY, endX + scale / 10, endY - scale / 5);
+    }
+
+    private static void drawPoint(Point p, Graphics2D g)
+    {
+        g.setColor(Color.ORANGE);
+
+        int scale = worldRenderer.getScale();
+
+        int x = AgentRendererImpl.getCoordinate(p.getX(), scale);
+        int y = AgentRendererImpl.getCoordinate(p.getY(), scale);
+
+        int hScale = scale / 2;
+        g.drawOval(x, y, 1, 1);
+        g.drawOval(x - hScale, y - hScale, scale, scale);
     }
 
     private static void drawVector(Point from, Point to, Graphics2D g, boolean doCaption)
