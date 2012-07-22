@@ -8,6 +8,7 @@ import by.inhw.flur.engine.behave.Flee;
 import by.inhw.flur.engine.behave.FollowPath;
 import by.inhw.flur.engine.behave.LookWhereYoureGoing;
 import by.inhw.flur.engine.behave.Path;
+import by.inhw.flur.engine.behave.PredictiveFollowPath;
 import by.inhw.flur.engine.behave.Pursue;
 import by.inhw.flur.engine.behave.Seek;
 import by.inhw.flur.engine.behave.VelocityMatch;
@@ -182,6 +183,19 @@ public class BrainFactory
             public SteeringOutput nextMove()
             {
                 return FollowPath.getSteering(agent, path);
+            }
+        };
+
+        return brain;
+    }
+
+    public static Brain predictiveFollowPath(final Agent agent, final Path path)
+    {
+        Brain brain = new Brain()
+        {
+            public SteeringOutput nextMove()
+            {
+                return PredictiveFollowPath.getSteering(agent, path);
             }
         };
 

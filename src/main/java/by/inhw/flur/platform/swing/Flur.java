@@ -49,8 +49,8 @@ public class Flur
 
         // LinePath path = new LinePath(p(5, 5), p(7, 15), p(12, 16), p(14, 14),
         // p(16, 5), p(18, 3), p(5, 5));
-        LinePath path = new LinePath(p(5, 4), p(3, 6), p(4, 11), p(10, 12), p(16, 10), p(17, 7), p(14, 5), p(9,6),
-                p(4,14), p(6,17), p(9, 15), p(5, 4));
+        LinePath path = new LinePath(p(5, 4), p(3, 6), p(4, 11), p(10, 12), p(16, 10), p(17, 7), p(14, 5), p(9, 6), p(
+                4, 14), p(6, 17), p(9, 15), p(5, 4));
 
         Debugger.drawPath(path);
 
