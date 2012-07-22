@@ -1,5 +1,7 @@
 package by.inhw.flur.engine.behave;
 
+import static java.lang.Math.abs;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import by.inhw.flur.util.VectorUtil;
 
 public class LinePath implements Path
 {
-
     public static boolean debug = true;
     private ArrayList<Point> segments;
     private ArrayList<Line> lines;
@@ -43,6 +44,25 @@ public class LinePath implements Path
         public Point getEnd()
         {
             return end;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (!(obj instanceof Line))
+            {
+                return false;
+            }
+
+            Line line = (Line) obj;
+
+            return begin.equals(line.begin) && end.equals(line.end);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return begin.hashCode() + end.hashCode() + 3;
         }
     }
 
@@ -111,21 +131,28 @@ public class LinePath implements Path
     // the new value is close to the old one, is called coherence, and it is a
     // feature of many geometric
     // algorithms.
-    public double getParam(Point agentCurrPos, double lastParameter)
+    public double getParam(Point agentCurrPos, double lastParameter, boolean isForward)
+    {
+        double lengthOnPath = getParam(agentCurrPos, lastParameter, lines, isForward);
+
+        return lengthOnPath;
+    }
+
+    double getParam(Point agentCurrPos, double lastParameter, List<Line> currLines, boolean isForward)
     {
         // get nearest segment
         double smallestDistance = -1;
-        Point nearestOnPath = null;
+        Point nearestPointOnPath = null;
         Line nearestLine = null;
-        for (Line line : lines)
+        for (Line line : currLines)
         {
-            Point nearestToCurrLine = VectorUtil.nearestPoint(line.begin, line.end, agentCurrPos);
-            double length = VectorUtil.length(agentCurrPos, nearestToCurrLine);
+            Point nearestPointToCurrLine = VectorUtil.nearestPoint(line.begin, line.end, agentCurrPos);
+            double length = VectorUtil.length(agentCurrPos, nearestPointToCurrLine);
 
             // first point
             if (smallestDistance == -1)
             {
-                nearestOnPath = nearestToCurrLine;
+                nearestPointOnPath = nearestPointToCurrLine;
                 smallestDistance = length;
                 nearestLine = line;
                 continue;
@@ -133,24 +160,54 @@ public class LinePath implements Path
 
             if (length < smallestDistance)
             {
-                nearestOnPath = nearestToCurrLine;
+                nearestPointOnPath = nearestPointToCurrLine;
                 smallestDistance = length;
                 nearestLine = line;
             }
         }
 
-        if (debug)
-            Debugger.logVector("Nearest on segment", new Line(agentCurrPos, nearestOnPath));
+        if (nearestLine == null)
+        {
+            double x = 0;
+            x++;
+        }
+        
+        double lengthOnPath = getLengthOnPath(nearestLine, nearestPointOnPath);
+        double diff = lengthOnPath - lastParameter;
+        // cycling forward
+        if (isForward && diff < 0)
+        {
+            diff += pathLength;
+        }
+        // cycling backwards
+        else if (!isForward && diff > 0)
+        {
+            diff -= pathLength;
+        }
 
-        double pathLength = VectorUtil.length(nearestLine.begin, nearestOnPath);
-        Line currLine = nearestLine;
+        if (abs(diff) > 8)
+        {
+            List<Line> newLines = new ArrayList<Line>(currLines);
+            newLines.remove(nearestLine);
+            lengthOnPath = getParam(agentCurrPos, lastParameter, newLines, isForward);
+        }
+
+        if (debug)
+            Debugger.logVector("Nearest on segment", new Line(agentCurrPos, nearestPointOnPath));
+
+        return lengthOnPath;
+    }
+
+    double getLengthOnPath(Line line, Point nearestPointOnPath)
+    {
+        double lengthOnPath = VectorUtil.length(line.begin, nearestPointOnPath);
+        Line currLine = line;
         while (currLine.prevLine != null)
         {
             currLine = currLine.prevLine;
-            pathLength += currLine.length;
+            lengthOnPath += currLine.length;
         }
-
-        return pathLength;
+        return lengthOnPath;
     }
 
     void createPath(Point... dots)

@@ -11,13 +11,14 @@ public class FollowPath
     public static boolean debug = true;
     public static String AGENT_PREV_POS_ON_PATH = "AGENT_PREV_POS_ON_PATH";
 
+    // Holds the distance along the path to generate the
+    // target. Can be negative if the character is to move
+    // along the reverse direction (in meters)
+    private static double pathOffset = -3;
+    private static boolean isForward = pathOffset > 0;
+
     public static SteeringOutput getSteering(Agent agent, Path path)
     {
-        // Holds the distance along the path to generate the
-        // target. Can be negative if the character is to move
-        // along the reverse direction (in meters)
-        double pathOffset = 2;
-
         // 1. Get agent's current previous position on path
         Double prevPos = (Double) agent.getData(AGENT_PREV_POS_ON_PATH);
         if (prevPos == null)
@@ -26,7 +27,7 @@ public class FollowPath
         }
 
         // 2. Find the current position on the path
-        double currentParam = path.getParam(agent.getPosition(), prevPos);
+        double currentParam = path.getParam(agent.getPosition(), prevPos, isForward);
         agent.putData(AGENT_PREV_POS_ON_PATH, new Double(currentParam));
         Debugger.log("CurrPos: ", currentParam);
 

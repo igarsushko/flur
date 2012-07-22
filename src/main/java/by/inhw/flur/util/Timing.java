@@ -27,7 +27,7 @@ public class Timing
         }
 
         // Update the timing information.
-        double currentTime = systemTime();
+        double currentTime = System.currentTimeMillis();
         lastFrameDuration = currentTime - lastFrameTimestamp;
         lastFrameTimestamp = currentTime;
 
@@ -46,11 +46,6 @@ public class Timing
                 fps = (float) (1000 / lastFrameDuration);
             }
         }
-    }
-
-    public double systemTime()
-    {
-        return System.currentTimeMillis();
     }
 
     public static boolean isPaused()

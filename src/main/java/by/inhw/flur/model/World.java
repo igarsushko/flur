@@ -57,7 +57,7 @@ public class World extends WorldPart
                     try
                     {
                         timing.update();
-                        Debugger.log("FPS ", timing.getFPS());
+                        Debugger.log("FPS ", (int) timing.getFPS());
                         if (!Timing.isPaused())
                         {
                             for (Agent agent : agents.values())
