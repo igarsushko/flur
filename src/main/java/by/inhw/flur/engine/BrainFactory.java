@@ -11,6 +11,7 @@ import by.inhw.flur.engine.behave.Path;
 import by.inhw.flur.engine.behave.PredictiveFollowPath;
 import by.inhw.flur.engine.behave.Pursue;
 import by.inhw.flur.engine.behave.Seek;
+import by.inhw.flur.engine.behave.Separation;
 import by.inhw.flur.engine.behave.VelocityMatch;
 import by.inhw.flur.engine.behave.Wander;
 import by.inhw.flur.model.Agent;
@@ -210,6 +211,19 @@ public class BrainFactory
             {
                 Point currVelocity = agent.getKinematic().getVelocity();
                 return new SteeringOutput(currVelocity, 0);
+            }
+        };
+
+        return brain;
+    }
+
+    public static Brain separation(final Agent agent, final Agent... targets)
+    {
+        Brain brain = new Brain()
+        {
+            public SteeringOutput nextMove()
+            {
+                return Separation.getSteering(agent, targets);
             }
         };
 

@@ -22,16 +22,14 @@ public class ControllerListener extends KeyAdapter
     Agent agent;
     Set<Integer> pressedKeys = Collections.synchronizedSet(new HashSet<Integer>());
 
-    public void setAgent(Agent agent)
+    public ControllerListener()
     {
-        this.agent = agent;
     }
 
+    public ControllerListener(Agent agent)
     {
-        if (agent != null)
-        {
-            runMovementListening();
-        }
+        this.agent = agent;
+        runMovementListening();
     }
 
     @Override

@@ -88,10 +88,11 @@ public class World extends WorldPart
         steering.setVelocity(velocity);
     }
 
-    public Agent registerAgent(Agent agent)
+    public Agent registerAgent(Agent agent, Point position)
     {
         agents.put(agent.getName(), agent);
         agent.setWorld(this);
+        agent.setPosition(position);
         worldRenderer.registerAgentRenderer(agent);
 
         return agent;
