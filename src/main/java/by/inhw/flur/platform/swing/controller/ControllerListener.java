@@ -8,6 +8,7 @@ import java.util.Set;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
+import by.inhw.flur.platform.swing.Debugger;
 import by.inhw.flur.util.Timing;
 
 public class ControllerListener extends KeyAdapter
@@ -21,13 +22,16 @@ public class ControllerListener extends KeyAdapter
     Agent agent;
     Set<Integer> pressedKeys = Collections.synchronizedSet(new HashSet<Integer>());
 
-    public ControllerListener(Agent agent)
+    public void setAgent(Agent agent)
     {
         this.agent = agent;
     }
 
     {
-        runMovementListening();
+        if (agent != null)
+        {
+            runMovementListening();
+        }
     }
 
     @Override
@@ -55,6 +59,10 @@ public class ControllerListener extends KeyAdapter
         else if (c == KeyEvent.VK_F2)
         {
             Timing.setPaused(true);
+        }
+        else if (c == KeyEvent.VK_F5)
+        {
+            Debugger.toogleDrawPath();
         }
         else if (c == KeyEvent.VK_UP)
         {
@@ -111,7 +119,7 @@ public class ControllerListener extends KeyAdapter
                     {
                         Point currVelocity = agent.getKinematic().getVelocity();
                         currVelocity.set(velocity.multiply(agent.getMaxSpeed()));
-                        
+
                         agent.getKinematic().setOrientation(orientation);
                     }
                     else

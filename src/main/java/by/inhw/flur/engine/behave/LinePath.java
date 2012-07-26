@@ -171,7 +171,7 @@ public class LinePath implements Path
             double x = 0;
             x++;
         }
-        
+
         double lengthOnPath = getLengthOnPath(nearestLine, nearestPointOnPath);
         double diff = lengthOnPath - lastParameter;
         // cycling forward
@@ -184,13 +184,13 @@ public class LinePath implements Path
         {
             diff -= pathLength;
         }
-
-        if (abs(diff) > 8)
-        {
-            List<Line> newLines = new ArrayList<Line>(currLines);
-            newLines.remove(nearestLine);
-            lengthOnPath = getParam(agentCurrPos, lastParameter, newLines, isForward);
-        }
+// TODO buggish part here on path 1
+//        if (abs(diff) > 5)
+//        {
+//            List<Line> newLines = new ArrayList<Line>(currLines);
+//            newLines.remove(nearestLine);
+//            lengthOnPath = getParam(agentCurrPos, lastParameter, newLines, isForward);
+//        }
 
         if (debug)
             Debugger.logVector("Nearest on segment", new Line(agentCurrPos, nearestPointOnPath));

@@ -16,6 +16,7 @@ public class Seek
         double maxAcceleration = agent.getMaxAcceleration();
 
         Point velocity = targetPosition.substract(agent.getPosition());
+
         velocity.normalize();
         velocity.multiplySelf(maxAcceleration);
 

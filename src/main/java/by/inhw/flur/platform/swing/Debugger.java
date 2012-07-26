@@ -32,6 +32,7 @@ public class Debugger
     private static JPanel loggingPanel;
     private static JPanel debugLayer;
     private static boolean on = true;
+    private static boolean doDrawPath = true;
     private static List<LinePath> paths = new ArrayList<LinePath>();
     private static Map<String, LinePath.Line> vectors = new HashMap<String, LinePath.Line>();
     private static Map<String, Point> points = new HashMap<String, Point>();
@@ -55,6 +56,11 @@ public class Debugger
         on = false;
     }
 
+    public static void toogleDrawPath()
+    {
+        doDrawPath = !doDrawPath;
+    }
+    
     public static void setWorldRenderer(WorldRendererImpl renderer)
     {
         Debugger.worldRenderer = renderer;
@@ -204,7 +210,7 @@ public class Debugger
                 // paintGlobalDebugInfo(g2d, worldRenderer.getScale());
 
                 // draw path
-                if (paths.size() > 0)
+                if (doDrawPath && paths.size() > 0)
                 {
                     for (LinePath path : paths)
                     {

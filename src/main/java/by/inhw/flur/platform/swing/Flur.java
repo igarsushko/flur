@@ -14,6 +14,7 @@ import by.inhw.flur.platform.swing.controller.ControllerListener;
 import by.inhw.flur.platform.swing.render.WorldRendererImpl;
 import by.inhw.flur.util.LevelLoader;
 import by.inhw.flur.util.PropertiesManager;
+import by.inhw.flur.util.Timing;
 
 import static by.inhw.flur.util.VectorUtil.p;
 
@@ -24,7 +25,7 @@ public class Flur
         JFrame frame = new JFrame("Flur");
         Debugger.setFrame(frame);
         // Debugger.off();
-        // Timing.setPaused(true);
+        Timing.setPaused(false);
         frame.setLayout(new BorderLayout());
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,18 +45,20 @@ public class Flur
         // 8, 40));
         // player.setPosition(new Point(12, 12));
         // player.setBrain(BrainFactory.puppetBrain(player));
-        // ControllerListener keyListener = new ControllerListener(player);
-        // frame.addKeyListener(keyListener);
+        ControllerListener keyListener = new ControllerListener();
+        frame.addKeyListener(keyListener);
 
         // LinePath path = new LinePath(p(5, 5), p(7, 15), p(12, 16), p(14, 14),
         // p(16, 5), p(18, 3), p(5, 5));
         LinePath path = new LinePath(p(5, 4), p(3, 6), p(4, 11), p(10, 12), p(16, 10), p(17, 7), p(14, 5), p(9, 6), p(
                 4, 14), p(6, 17), p(9, 15), p(5, 4));
 
+        // LinePath path = new LinePath(p(7, 7), p(13, 7), p(13, 13), p(7, 13),
+        // p(7, 7));
         Debugger.drawPath(path);
 
-        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 50, 10, 10));
-        bot1.setPosition(new Point(3, 6));
+        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 50, 5, 30));
+        bot1.setPosition(new Point(4, 4));
         bot1.setBrain(BrainFactory.followPath(bot1, path));
 
         // Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 50, 10,

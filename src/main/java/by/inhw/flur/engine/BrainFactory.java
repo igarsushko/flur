@@ -19,7 +19,7 @@ import by.inhw.flur.model.movement.SteeringOutput;
 
 public class BrainFactory
 {
-    public static Brain seekAndAlign(final Agent persuader, final Agent target)
+    public static Brain seekAndLookWhereYoureGoing(final Agent persuader, final Agent target)
     {
         Brain brain = new Brain()
         {
@@ -27,7 +27,7 @@ public class BrainFactory
             {
                 SteeringOutput steering = Seek.getSteering(persuader, target);
 
-                double rotation = Align.getAlign(persuader, target);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(persuader);
                 steering.setRotation(rotation);
 
                 return steering;
@@ -145,13 +145,13 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain evadeAndAlign(final Agent agent, final Agent persuader)
+    public static Brain evadeAndLookWhereYoureGoing(final Agent agent, final Agent persuader)
     {
         Brain brain = new Brain()
         {
             public SteeringOutput nextMove()
             {
-                double rotation = Align.getAlign(agent, persuader);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
 
                 SteeringOutput steering = Evade.getSteering(agent, persuader);
                 steering.setRotation(rotation);

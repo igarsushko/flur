@@ -10,6 +10,9 @@ public class Pursue
     {
         Point targetPredictedPosition = PredictPosition.predictPosition(agent, target);
 
+        // Debugger.logVector("Pursue vector", new
+        // LinePath.Line(agent.getPosition(), targetPredictedPosition));
+
         return Seek.getSteering(agent, targetPredictedPosition);
     }
 }
