@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 
 import by.inhw.flur.engine.BrainFactory;
 import by.inhw.flur.engine.behave.LinePath;
+import by.inhw.flur.engine.behave.ObstacleAvoidance;
+import by.inhw.flur.engine.behave.SimpleCollisionDetector;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.World;
 import by.inhw.flur.model.movement.Point;
@@ -25,7 +27,7 @@ public class Flur
         JFrame frame = new JFrame("Flur");
         Debugger.setFrame(frame);
         // Debugger.off();
-        Timing.setPaused(false);
+        // Timing.setPaused(true);
         frame.setLayout(new BorderLayout());
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,22 +39,27 @@ public class Flur
         WorldRendererImpl renderer = new WorldRendererImpl(worldScale);
         frame.add(renderer);
 
-        int[][] map = LevelLoader.loadLevel("src/main/resources/map/empty.map");
+        int[][] map = LevelLoader.loadLevel("src/main/resources/map/level_1.map");
         World world = new World(map, renderer);
         world.renderWorld();
 
-        Agent player = world.registerAgent(new Agent("player", "red", 6, 7, 8, 40), p(12, 12));
-        player.setBrain(BrainFactory.puppetBrain(player));
-        ControllerListener keyListener = new ControllerListener(player);
+        ObstacleAvoidance.setCollisionDetector(new SimpleCollisionDetector(world));
+
+        // Agent player = world.registerAgent(new Agent("player", "red", 6, 7,
+        // 8, 40), p(12, 12));
+        // player.setBrain(BrainFactory.puppetBrain(player));
+        ControllerListener keyListener = new ControllerListener();
         frame.addKeyListener(keyListener);
 
-        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 4, 60, 10, 40), p(11, 10));
-        Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 5, 60, 10, 40), p(12, 10));
-        Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 6, 60, 10, 40), p(13, 10));
+        Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 60, 10, 40), p(11, 10));
+        // Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 3, 60, 10,
+        // 40), p(12, 10));
+        // Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10,
+        // 40), p(13, 10));
 
-        bot1.setBrain(BrainFactory.separation(bot1, player, bot2, bot3));
-        bot2.setBrain(BrainFactory.separation(bot2, player, bot1, bot3));
-        bot3.setBrain(BrainFactory.separation(bot3, player, bot1, bot2));
+        bot1.setBrain(BrainFactory.wander(bot1));
+        // bot2.setBrain(BrainFactory.collisionAvoidance(bot2, bot1, bot3));
+        // bot3.setBrain(BrainFactory.collisionAvoidance(bot3, bot1, bot2));
 
         world.bringWorldToLive();
         frame.pack();

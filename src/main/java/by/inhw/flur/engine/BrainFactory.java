@@ -2,11 +2,14 @@ package by.inhw.flur.engine;
 
 import by.inhw.flur.engine.behave.Align;
 import by.inhw.flur.engine.behave.Arrive;
+import by.inhw.flur.engine.behave.CollisionAvoidance;
+import by.inhw.flur.engine.behave.CollisionDetector;
 import by.inhw.flur.engine.behave.Evade;
 import by.inhw.flur.engine.behave.Face;
 import by.inhw.flur.engine.behave.Flee;
 import by.inhw.flur.engine.behave.FollowPath;
 import by.inhw.flur.engine.behave.LookWhereYoureGoing;
+import by.inhw.flur.engine.behave.ObstacleAvoidance;
 import by.inhw.flur.engine.behave.Path;
 import by.inhw.flur.engine.behave.PredictiveFollowPath;
 import by.inhw.flur.engine.behave.Pursue;
@@ -224,6 +227,50 @@ public class BrainFactory
             public SteeringOutput nextMove()
             {
                 return Separation.getSteering(agent, targets);
+            }
+        };
+
+        return brain;
+    }
+
+    public static Brain collisionAvoidance(final Agent agent, final Agent... targets)
+    {
+        Brain brain = new Brain()
+        {
+            public SteeringOutput nextMove()
+            {
+                SteeringOutput steering = CollisionAvoidance.getSteering(agent, targets);
+
+                if (steering.getRotation() == 0)
+                {
+                    double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                    steering.setRotation(rotation);
+                }
+
+                return steering;
+            }
+        };
+
+        return brain;
+    }
+
+    public static Brain obstacleAvoidance(final Agent agent)
+    {
+        Brain brain = new Brain()
+        {
+            public SteeringOutput nextMove()
+            {
+                SteeringOutput steering = ObstacleAvoidance.getSteering(agent);
+
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steering.setRotation(rotation);
+
+                if (!steering.getVelocity().isNonZero())
+                {
+                    steering = Wander.getSteering(agent);
+                }
+
+                return steering;
             }
         };
 

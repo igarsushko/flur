@@ -211,4 +211,28 @@ public class VectorUtil
     {
         return new Point(x, y);
     }
+
+    /**
+     * Calculates dot product of 2 vectors.
+     */
+    public static double dot(Point v1, Point v2)
+    {
+        return v1.getX() * v2.getX() + v1.getY() * v2.getY() + v1.getZ() * v2.getZ();
+    }
+
+    /**
+     * Returns angle in degrees between 2 vectors
+     * 
+     * A.B = |A| * |B| * cos(theta); A.B = 1 * 1 * cos(theta); A.B = cos(theta);
+     * theta = acos(A.B)
+     */
+    public static double getAngleBetweenVectors(Point v1, Point v2)
+    {
+        Point vec1 = v1.normalizedCopy();
+        Point vec2 = v2.normalizedCopy();
+
+        double dot = dot(vec1, vec2);
+
+        return Math.acos(dot);
+    }
 }

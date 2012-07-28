@@ -184,6 +184,13 @@ public final class Point
         }
     }
 
+    public Point normalizedCopy()
+    {
+        Point copy = this.createCopy();
+        copy.normalize();
+        return copy;
+    }
+
     public double length()
     {
         return Math.sqrt(squareLength());

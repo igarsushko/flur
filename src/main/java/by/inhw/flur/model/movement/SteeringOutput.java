@@ -31,4 +31,9 @@ public class SteeringOutput
     {
         this.rotation = rotation;
     }
+
+    public double getRotation()
+    {
+        return rotation;
+    }
 }
