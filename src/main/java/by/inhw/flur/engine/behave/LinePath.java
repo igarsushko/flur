@@ -184,16 +184,18 @@ public class LinePath implements Path
         {
             diff -= pathLength;
         }
-// TODO buggish part here on path 1
-//        if (abs(diff) > 5)
-//        {
-//            List<Line> newLines = new ArrayList<Line>(currLines);
-//            newLines.remove(nearestLine);
-//            lengthOnPath = getParam(agentCurrPos, lastParameter, newLines, isForward);
-//        }
+        // TODO buggish part here on path 1
+        // if (abs(diff) > 5)
+        // {
+        // List<Line> newLines = new ArrayList<Line>(currLines);
+        // newLines.remove(nearestLine);
+        // lengthOnPath = getParam(agentCurrPos, lastParameter, newLines,
+        // isForward);
+        // }
 
         if (debug)
-            Debugger.logVector("Nearest on segment", new Line(agentCurrPos, nearestPointOnPath));
+            Debugger.logVector("Nearest on segment", new by.inhw.flur.model.movement.Line(agentCurrPos,
+                    nearestPointOnPath));
 
         return lengthOnPath;
     }

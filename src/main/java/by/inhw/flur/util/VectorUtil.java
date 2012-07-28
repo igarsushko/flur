@@ -235,4 +235,58 @@ public class VectorUtil
 
         return Math.acos(dot);
     }
+
+    public static Point getLineIntersection2d(Point p1, Point p2, Point p3, Point p4)
+    {
+        double p1_x = p1.getX();
+        double p1_y = p1.getY();
+        double p2_x = p2.getX();
+        double p2_y = p2.getY();
+        double p3_x = p3.getX();
+        double p3_y = p3.getY();
+        double p4_x = p4.getX();
+        double p4_y = p4.getY();
+
+        double s1_x, s1_y, s2_x, s2_y;
+        s1_x = p2_x - p1_x;
+        s1_y = p2_y - p1_y;
+        s2_x = p4_x - p3_x;
+        s2_y = p4_y - p3_y;
+
+        double d = -s2_x * s1_y + s1_x * s2_y;
+        if (d == 0)
+        {
+            return null;
+        }
+
+        double s, t;
+        s = (-s1_y * (p1_x - p3_x) + s1_x * (p1_y - p3_y)) / d;
+        t = (s2_x * (p1_y - p3_y) - s2_y * (p1_x - p3_x)) / d;
+
+        if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+        {
+            // Collision detected
+            double i_x = p1_x + (t * s1_x);
+            double i_y = p1_y + (t * s1_y);
+            return new Point(i_x, i_y);
+        }
+
+        return null;
+    }
+
+    public static Point cross(Point vec1, Point vec2)
+    {
+        double Ax = vec1.getX();
+        double Ay = vec1.getY();
+        double Az = vec1.getZ();
+        double Bx = vec2.getX();
+        double By = vec2.getY();
+        double Bz = vec2.getZ();
+
+        double x = (Ay * Bz) - (By * Az);
+        double y = -(Ax * Bz) + (Bx * Az);
+        double z = (Ax * By) - (Ay * Bx);
+
+        return new Point(x, y, z);
+    }
 }

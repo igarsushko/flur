@@ -1,24 +1,21 @@
 package by.inhw.flur.platform.swing;
 
+import static by.inhw.flur.util.VectorUtil.p;
+
 import java.awt.BorderLayout;
 import java.util.Properties;
 
 import javax.swing.JFrame;
 
 import by.inhw.flur.engine.BrainFactory;
-import by.inhw.flur.engine.behave.LinePath;
 import by.inhw.flur.engine.behave.ObstacleAvoidance;
 import by.inhw.flur.engine.behave.SimpleCollisionDetector;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.World;
-import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.platform.swing.controller.ControllerListener;
 import by.inhw.flur.platform.swing.render.WorldRendererImpl;
 import by.inhw.flur.util.LevelLoader;
 import by.inhw.flur.util.PropertiesManager;
-import by.inhw.flur.util.Timing;
-
-import static by.inhw.flur.util.VectorUtil.p;
 
 public class Flur
 {
@@ -52,14 +49,12 @@ public class Flur
         frame.addKeyListener(keyListener);
 
         Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 60, 10, 40), p(11, 10));
-        // Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 3, 60, 10,
-        // 40), p(12, 10));
-        // Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10,
-        // 40), p(13, 10));
+        Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 3, 60, 10, 40), p(12, 10));
+        Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10, 40), p(13, 10));
 
-        bot1.setBrain(BrainFactory.wander(bot1));
-        // bot2.setBrain(BrainFactory.collisionAvoidance(bot2, bot1, bot3));
-        // bot3.setBrain(BrainFactory.collisionAvoidance(bot3, bot1, bot2));
+        bot1.setBrain(BrainFactory.obstacleAvoidance(bot1));
+        bot2.setBrain(BrainFactory.obstacleAvoidance(bot2));
+        bot3.setBrain(BrainFactory.obstacleAvoidance(bot3));
 
         world.bringWorldToLive();
         frame.pack();

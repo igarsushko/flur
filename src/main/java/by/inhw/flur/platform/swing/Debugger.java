@@ -20,6 +20,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import by.inhw.flur.engine.behave.LinePath;
+import by.inhw.flur.model.movement.Line;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.platform.swing.render.AgentRendererImpl;
 import by.inhw.flur.platform.swing.render.WorldRendererImpl;
@@ -34,7 +35,7 @@ public class Debugger
     private static boolean on = true;
     private static boolean doDrawPath = true;
     private static List<LinePath> paths = new ArrayList<LinePath>();
-    private static Map<String, LinePath.Line> vectors = new HashMap<String, LinePath.Line>();
+    private static Map<String, Line> vectors = new HashMap<String, Line>();
     private static Map<String, Point> points = new HashMap<String, Point>();
 
     // in milliseconds
@@ -60,7 +61,7 @@ public class Debugger
     {
         doDrawPath = !doDrawPath;
     }
-    
+
     public static void setWorldRenderer(WorldRendererImpl renderer)
     {
         Debugger.worldRenderer = renderer;
@@ -122,14 +123,25 @@ public class Debugger
         }
     }
 
-    public static void logVector(String id, LinePath.Line vector)
+    public static void logVector(String id, Line vector)
     {
         vectors.put(id, vector);
     }
+    
+    public static void unlogVector(String id)
+    {
+        vectors.remove(id);
+    }
+
 
     public static void logPoint(String id, Point point)
     {
         points.put(id, point);
+    }
+
+    public static void unlogPoint(String id)
+    {
+        points.remove(id);
     }
 
     private static String format(Object value)
@@ -224,7 +236,7 @@ public class Debugger
                 // draw vectors
                 if (vectors.size() > 0)
                 {
-                    for (LinePath.Line line : vectors.values())
+                    for (Line line : vectors.values())
                     {
                         drawVector(line.getBegin(), line.getEnd(), g2d, false);
                     }

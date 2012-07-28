@@ -1,7 +1,7 @@
 package by.inhw.flur.engine.behave;
 
-import by.inhw.flur.engine.behave.LinePath.Line;
 import by.inhw.flur.model.Agent;
+import by.inhw.flur.model.movement.Line;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.platform.swing.Debugger;
