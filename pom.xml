@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>by.inhw.flur</groupId>
     <artifactId>flur</artifactId>
-    <version>4-SNAPSHOT</version>
+    <version>4</version>
     <name>Flur</name>
 
     <properties>
@@ -16,7 +16,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/igarsushko/flur.git</connection>
-        <tag>HEAD</tag>
+        <tag>V4</tag>
     </scm>
 
     <build>
