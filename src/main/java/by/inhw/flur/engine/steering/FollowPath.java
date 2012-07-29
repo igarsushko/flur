@@ -8,8 +8,11 @@ import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.platform.swing.Debugger;
 
-public class FollowPath
+public class FollowPath implements Steering
 {
+    private Agent agent;
+    private Path path;
+
     public static boolean debug = true;
     public static String AGENT_PREV_POS_ON_PATH = "AGENT_PREV_POS_ON_PATH";
 
@@ -19,7 +22,13 @@ public class FollowPath
     private static double pathOffset = 3;
     private static boolean isForward = pathOffset > 0;
 
-    public static SteeringOutput getSteering(Agent agent, Path path)
+    public FollowPath(Agent agent, Path path)
+    {
+        this.agent = agent;
+        this.path = path;
+    }
+
+    public SteeringOutput getSteering()
     {
         // 1. Get agent's current previous position on path
         Double prevPos = (Double) agent.getData(AGENT_PREV_POS_ON_PATH);
