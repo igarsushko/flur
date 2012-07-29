@@ -1,4 +1,4 @@
-package by.inhw.flur.engine.steering;
+package by.inhw.flur.engine.steering.facing;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.util.VectorUtil;
