@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 
 import by.inhw.flur.engine.BrainFactory;
 import by.inhw.flur.engine.steering.ObstacleAvoidance;
-import by.inhw.flur.engine.steering.SimpleCollisionDetector;
+import by.inhw.flur.engine.steering.collision.SimpleCollisionDetector;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.World;
 import by.inhw.flur.platform.swing.controller.ControllerListener;

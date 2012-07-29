@@ -2,7 +2,6 @@ package by.inhw.flur.engine;
 
 import by.inhw.flur.engine.steering.Arrive;
 import by.inhw.flur.engine.steering.CollisionAvoidance;
-import by.inhw.flur.engine.steering.CollisionDetector;
 import by.inhw.flur.engine.steering.Evade;
 import by.inhw.flur.engine.steering.Flee;
 import by.inhw.flur.engine.steering.FollowPath;
@@ -14,6 +13,7 @@ import by.inhw.flur.engine.steering.Seek;
 import by.inhw.flur.engine.steering.Separation;
 import by.inhw.flur.engine.steering.VelocityMatch;
 import by.inhw.flur.engine.steering.Wander;
+import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.engine.steering.facing.Align;
 import by.inhw.flur.engine.steering.facing.Face;
 import by.inhw.flur.engine.steering.facing.LookWhereYoureGoing;

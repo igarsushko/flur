@@ -1,6 +1,8 @@
 package by.inhw.flur.engine.steering;
 
 import static by.inhw.flur.util.VectorUtil.add;
+import by.inhw.flur.engine.steering.collision.Collision;
+import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Line;
 import by.inhw.flur.model.movement.Point;
