@@ -206,9 +206,11 @@ public class BrainFactory
     {
         Brain brain = new Brain()
         {
+            Steering steering = new PredictiveFollowPath(agent, path);
+
             public SteeringOutput nextMove()
             {
-                return PredictiveFollowPath.getSteering(agent, path);
+                return steering.getSteering();
             }
         };
 

@@ -1,5 +1,6 @@
 package by.inhw.flur.engine.steering;
 
+import by.inhw.flur.engine.steering.predict.PredictPosition;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
