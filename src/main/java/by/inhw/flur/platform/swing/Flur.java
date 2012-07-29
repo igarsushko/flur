@@ -43,19 +43,20 @@ public class Flur
 
         ObstacleAvoidance.setCollisionDetector(new SimpleCollisionDetector(world));
 
-        // Agent player = world.registerAgent(new Agent("player", "red", 6, 7,
-        // 8, 40), p(12, 12));
-        // player.setBrain(BrainFactory.puppetBrain(player));
-        ControllerListener keyListener = new ControllerListener();
+        Agent player = world.registerAgent(new Agent("player", "red", 6, 7, 8, 40), p(12, 12));
+        player.setBrain(BrainFactory.puppetBrain(player));
+        ControllerListener keyListener = new ControllerListener(player);
         frame.addKeyListener(keyListener);
 
         Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 60, 10, 40), p(11, 10));
-        Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 3, 60, 10, 40), p(12, 10));
-        Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10, 40), p(13, 10));
+        // Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 3, 60, 10,
+        // 40), p(12, 10));
+        // Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10,
+        // 40), p(13, 10));
 
-        bot1.setBrain(BrainFactory.obstacleAvoidance(bot1));
-        bot2.setBrain(BrainFactory.obstacleAvoidance(bot2));
-        bot3.setBrain(BrainFactory.obstacleAvoidance(bot3));
+        bot1.setBrain(BrainFactory.arrive(bot1, player));
+        // bot2.setBrain(BrainFactory.obstacleAvoidance(bot2));
+        // bot3.setBrain(BrainFactory.obstacleAvoidance(bot3));
 
         world.bringWorldToLive();
         frame.pack();

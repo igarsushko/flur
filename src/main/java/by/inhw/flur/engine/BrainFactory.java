@@ -10,9 +10,9 @@ import by.inhw.flur.engine.steering.PredictiveFollowPath;
 import by.inhw.flur.engine.steering.Pursue;
 import by.inhw.flur.engine.steering.Seek;
 import by.inhw.flur.engine.steering.Separation;
+import by.inhw.flur.engine.steering.Steering;
 import by.inhw.flur.engine.steering.VelocityMatch;
 import by.inhw.flur.engine.steering.Wander;
-import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.engine.steering.facing.Align;
 import by.inhw.flur.engine.steering.facing.Face;
 import by.inhw.flur.engine.steering.facing.LookWhereYoureGoing;
@@ -77,18 +77,20 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain arriveAndAlign(final Agent persuader, final Agent target)
+    public static Brain arrive(final Agent persuader, final Agent target)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Arrive(persuader, target);
+
             public SteeringOutput nextMove()
             {
-                double rotation = Align.getAlign(persuader, target);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(persuader);
 
-                SteeringOutput steering = Arrive.getSteering(persuader, target);
-                steering.setRotation(rotation);
+                SteeringOutput steeringOut = steering.getSteering();
+                steeringOut.setRotation(rotation);
 
-                return steering;
+                return steeringOut;
             }
         };
 

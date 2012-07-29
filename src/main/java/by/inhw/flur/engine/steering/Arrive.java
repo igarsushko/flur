@@ -1,26 +1,25 @@
 package by.inhw.flur.engine.steering;
 
+import static by.inhw.flur.util.VectorUtil.sub;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 
-public class Arrive
+public class Arrive implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent, Agent target)
-    {
-        return Arrive.getSteering(agent, target.getPosition());
-    }
+    private Agent agent;
+    private Agent target;
 
-    public static SteeringOutput getSteering(Agent agent, Point targetPosition)
-    {
-        double arriveRadius = 2;
-        double slowRadius = 7;
-        double timeToTarget = 0.1;
+    private double arriveRadius = 2;
+    private double slowRadius = 7;
+    private double timeToTarget = 0.1;
 
+    public SteeringOutput getSteering()
+    {
         double maxSpeed = agent.getMaxSpeed();
         double finalSpeed = 0;
 
-        Point direction = targetPosition.substract(agent.getPosition());
+        Point direction = sub(target.getPosition(), agent.getPosition());
 
         double distance = direction.length();
         if (distance <= arriveRadius)
@@ -54,4 +53,11 @@ public class Arrive
 
         return new SteeringOutput(finalVelocity, 0);
     }
+
+    public Arrive(Agent agent, Agent target)
+    {
+        this.agent = agent;
+        this.target = target;
+    }
+
 }
