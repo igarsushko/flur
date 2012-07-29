@@ -1,4 +1,4 @@
-package by.inhw.flur.engine.behave;
+package by.inhw.flur.engine.steering;
 
 import static by.inhw.flur.util.VectorUtil.add;
 import static by.inhw.flur.util.VectorUtil.cross;

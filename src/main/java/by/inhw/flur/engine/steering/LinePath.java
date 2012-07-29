@@ -1,4 +1,4 @@
-package by.inhw.flur.engine.behave;
+package by.inhw.flur.engine.steering;
 
 import static java.lang.Math.abs;
 

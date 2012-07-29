@@ -1,4 +1,4 @@
-package by.inhw.flur.engine.behave;
+package by.inhw.flur.engine.steering;
 
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
