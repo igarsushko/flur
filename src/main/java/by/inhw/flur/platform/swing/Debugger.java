@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import by.inhw.flur.engine.steering.LinePath;
+import by.inhw.flur.engine.steering.path.LinePath;
 import by.inhw.flur.model.movement.Line;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.platform.swing.render.AgentRendererImpl;

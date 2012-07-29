@@ -1,4 +1,4 @@
-package by.inhw.flur.engine.steering;
+package by.inhw.flur.engine.steering.path;
 
 import by.inhw.flur.model.movement.Point;
 

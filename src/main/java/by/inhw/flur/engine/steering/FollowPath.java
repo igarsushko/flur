@@ -1,6 +1,7 @@
 package by.inhw.flur.engine.steering;
 
 import by.inhw.flur.engine.steering.facing.Face;
+import by.inhw.flur.engine.steering.path.Path;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Line;
 import by.inhw.flur.model.movement.Point;
