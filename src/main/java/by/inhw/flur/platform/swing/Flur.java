@@ -54,7 +54,7 @@ public class Flur
         // Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10,
         // 40), p(13, 10));
 
-        bot1.setBrain(BrainFactory.arrive(bot1, player));
+        bot1.setBrain(BrainFactory.evade(bot1, player));
         // bot2.setBrain(BrainFactory.obstacleAvoidance(bot2));
         // bot3.setBrain(BrainFactory.obstacleAvoidance(bot3));
 

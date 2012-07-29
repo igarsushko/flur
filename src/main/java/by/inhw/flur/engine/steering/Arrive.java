@@ -14,6 +14,12 @@ public class Arrive implements Steering
     private double slowRadius = 7;
     private double timeToTarget = 0.1;
 
+    public Arrive(Agent agent, Agent target)
+    {
+        this.agent = agent;
+        this.target = target;
+    }
+
     public SteeringOutput getSteering()
     {
         double maxSpeed = agent.getMaxSpeed();
@@ -53,11 +59,4 @@ public class Arrive implements Steering
 
         return new SteeringOutput(finalVelocity, 0);
     }
-
-    public Arrive(Agent agent, Agent target)
-    {
-        this.agent = agent;
-        this.target = target;
-    }
-
 }

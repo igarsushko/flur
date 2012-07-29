@@ -4,12 +4,18 @@ import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 
-public class Evade
+public class Evade extends Flee
 {
-    public static SteeringOutput getSteering(Agent agent, Agent target)
+    public Evade(Agent agent, Agent persuader)
     {
-        Point targetPredictedPosition = PredictPosition.predictPosition(agent, target);
-
-        return Flee.getSteering(agent, targetPredictedPosition);
+        super(agent, persuader);
     }
+
+    public SteeringOutput getSteering()
+    {
+        Point persuaderPredictedPosition = PredictPosition.predictPosition(agent, persuader);
+
+        return super.getSteering(persuaderPredictedPosition);
+    }
+
 }

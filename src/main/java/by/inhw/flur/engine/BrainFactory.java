@@ -41,18 +41,20 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain fleeAndAlign(final Agent agent, final Agent persuader)
+    public static Brain flee(final Agent agent, final Agent persuader)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Flee(agent, persuader);
+
             public SteeringOutput nextMove()
             {
-                SteeringOutput steering = Flee.getSteering(agent, persuader);
+                SteeringOutput steeringOut = steering.getSteering();
 
-                double rotation = Align.getAlign(agent, persuader);
-                steering.setRotation(rotation);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steeringOut.setRotation(rotation);
 
-                return steering;
+                return steeringOut;
             }
         };
 
@@ -151,18 +153,20 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain evadeAndLookWhereYoureGoing(final Agent agent, final Agent persuader)
+    public static Brain evade(final Agent agent, final Agent persuader)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Evade(agent, persuader);
+
             public SteeringOutput nextMove()
             {
+                SteeringOutput steeringOut = steering.getSteering();
+
                 double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steeringOut.setRotation(rotation);
 
-                SteeringOutput steering = Evade.getSteering(agent, persuader);
-                steering.setRotation(rotation);
-
-                return steering;
+                return steeringOut;
             }
         };
 

@@ -1,23 +1,33 @@
 package by.inhw.flur.engine.steering;
 
+import static by.inhw.flur.util.VectorUtil.sub;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 
-public class Flee
+public class Flee implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent, Agent persuader)
+    protected Agent agent;
+    protected Agent persuader;
+
+    public Flee(Agent agent, Agent persuader)
+    {
+        this.agent = agent;
+        this.persuader = persuader;
+    }
+
+    public SteeringOutput getSteering()
     {
         Point persuaderPosition = persuader.getPosition();
 
-        return getSteering(agent, persuaderPosition);
+        return getSteering(persuaderPosition);
     }
 
-    public static SteeringOutput getSteering(Agent agent, Point persuaderPosition)
+    protected SteeringOutput getSteering(Point persuaderPosition)
     {
         double maxAcceleration = agent.getMaxAcceleration();
 
-        Point velocity = agent.getPosition().substract(persuaderPosition);
+        Point velocity = sub(agent.getPosition(), persuaderPosition);
         velocity.normalize();
         velocity.multiplySelf(maxAcceleration);
 
