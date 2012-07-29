@@ -7,17 +7,25 @@ import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.util.Rand;
 import by.inhw.flur.util.VectorUtil;
 
-public class Wander
+public class Wander implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent)
+    private Agent agent;
+
+    // Holds the radius and forward offset of the wander circle.
+    double wanderOffset = 5;
+    double wanderRadius = 3;
+
+    // Holds the maximum rate at which the wander orientation can change
+    double wanderRate = 4;
+
+    public Wander(Agent agent)
     {
-        // Holds the radius and forward offset of the wander circle.
-        double wanderOffset = 5;
-        double wanderRadius = 3;
+        this.agent = agent;
+    }
 
-        // Holds the maximum rate at which the wander orientation can change
-        double wanderRate = 4;
-
+    @Override
+    public SteeringOutput getSteering()
+    {
         // Holds the current orientation of the wander target
         double wanderOrientation = agent.getOrientation();
 

@@ -75,13 +75,13 @@ public class CollisionAvoidance implements Steering
 
         // 2. Calculate the steering
 
-        // If we have no target, then exit
+        // If we have no target, then exit with zero accelleration
         if (firstTarget == null)
         {
-            return Wander.getSteering(agent);
+            return new SteeringOutput();
         }
 
-        // If we�re going to hit exactly, or if we�re already
+        // If we are going to hit exactly, or if we are already
         // colliding, then do the steering based on current position.
         Point relativePos = null;
         if (firstMinSeparation <= 0 || firstDistance < radius)

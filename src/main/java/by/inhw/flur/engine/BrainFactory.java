@@ -146,9 +146,11 @@ public class BrainFactory
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Wander(agent);
+
             public SteeringOutput nextMove()
             {
-                return Wander.getSteering(agent);
+                return steering.getSteering();
             }
         };
 
@@ -249,11 +251,6 @@ public class BrainFactory
 
                 double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
                 steeringOut.setRotation(rotation);
-
-                if (!steeringOut.getVelocity().isNonZero())
-                {
-                    steeringOut = Wander.getSteering(agent);
-                }
 
                 return steeringOut;
             }
