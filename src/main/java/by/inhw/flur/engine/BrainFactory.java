@@ -13,6 +13,7 @@ import by.inhw.flur.engine.steering.Separation;
 import by.inhw.flur.engine.steering.Steering;
 import by.inhw.flur.engine.steering.VelocityMatch;
 import by.inhw.flur.engine.steering.Wander;
+import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.engine.steering.facing.Align;
 import by.inhw.flur.engine.steering.facing.Face;
 import by.inhw.flur.engine.steering.facing.LookWhereYoureGoing;
@@ -264,23 +265,25 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain obstacleAvoidance(final Agent agent)
+    public static Brain obstacleAvoidance(final Agent agent, final CollisionDetector collisionDetector)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new ObstacleAvoidance(agent, collisionDetector);
+
             public SteeringOutput nextMove()
             {
-                SteeringOutput steering = ObstacleAvoidance.getSteering(agent);
+                SteeringOutput steeringOut = steering.getSteering();
 
                 double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
-                steering.setRotation(rotation);
+                steeringOut.setRotation(rotation);
 
-                if (!steering.getVelocity().isNonZero())
+                if (!steeringOut.getVelocity().isNonZero())
                 {
-                    steering = Wander.getSteering(agent);
+                    steeringOut = Wander.getSteering(agent);
                 }
 
-                return steering;
+                return steeringOut;
             }
         };
 

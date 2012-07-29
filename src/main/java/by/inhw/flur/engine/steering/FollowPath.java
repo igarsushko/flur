@@ -19,8 +19,8 @@ public class FollowPath implements Steering
     // Holds the distance along the path to generate the
     // target. Can be negative if the character is to move
     // along the reverse direction (in meters)
-    private static double pathOffset = 3;
-    private static boolean isForward = pathOffset > 0;
+    private double pathOffset = 3;
+    private boolean isForward = pathOffset > 0;
 
     public FollowPath(Agent agent, Path path)
     {

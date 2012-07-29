@@ -10,35 +10,38 @@ import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.platform.swing.Debugger;
 import by.inhw.flur.util.VectorUtil;
 
-public class ObstacleAvoidance
+public class ObstacleAvoidance implements Steering
 {
-    private static CollisionDetector collisionDetector;
     public static boolean debug = false;
 
-    public static SteeringOutput getSteering(Agent agent)
+    private Agent agent;
+    private CollisionDetector collisionDetector;
+
+    // Holds the minimum distance to a wall (i.e., how far
+    // to avoid collision) should be greater than the
+    // radius of the character.
+    private double avoidDistance = 1;
+
+    // Holds the distance to look ahead for a collision
+    // (i.e., the length of the collision ray)
+    private double lookahead = 3;
+
+    public ObstacleAvoidance(Agent agent, CollisionDetector collisionDetector)
     {
-        // Holds the minimum distance to a wall (i.e., how far
-        // to avoid collision) should be greater than the
-        // radius of the character.
-        double avoidDistance = 1;
+        this.agent = agent;
+        this.collisionDetector = collisionDetector;
+    }
 
-        // Holds the distance to look ahead for a collision
-        // (i.e., the length of the collision ray)
-        double lookahead = 3;
-
+    public SteeringOutput getSteering()
+    {
         // 1. Calculate the target to delegate to seek
 
         // Calculate the collision ray vector
         Point rayVector = agent.getVelocity().createCopy();
         rayVector.normalize();
 
-        Point whiskerLeft = rayVector.createCopy();
-        whiskerLeft = VectorUtil.rotateVector2d(whiskerLeft, -30);
-        whiskerLeft.multiplySelf(lookahead / 2);
-
-        Point whiskerRight = rayVector.createCopy();
-        whiskerRight = VectorUtil.rotateVector2d(whiskerRight, 30);
-        whiskerRight.multiplySelf(lookahead / 2);
+        Point whiskerLeft = getWhisker(rayVector, -30);
+        Point whiskerRight = getWhisker(rayVector, 30);
 
         rayVector.multiplySelf(lookahead);
 
@@ -80,8 +83,12 @@ public class ObstacleAvoidance
         return Seek.getSteering(agent, targetPosition);
     }
 
-    public static void setCollisionDetector(CollisionDetector collisionDetector)
+    private Point getWhisker(Point rayVector, double angle)
     {
-        ObstacleAvoidance.collisionDetector = collisionDetector;
+        Point whisker = rayVector.createCopy();
+        whisker = VectorUtil.rotateVector2d(whisker, angle);
+        whisker.multiplySelf(lookahead / 2);
+
+        return whisker;
     }
 }

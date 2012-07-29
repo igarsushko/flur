@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import by.inhw.flur.engine.BrainFactory;
 import by.inhw.flur.engine.steering.ObstacleAvoidance;
+import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.engine.steering.collision.SimpleCollisionDetector;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.World;
@@ -41,7 +42,7 @@ public class Flur
         World world = new World(map, renderer);
         world.renderWorld();
 
-        ObstacleAvoidance.setCollisionDetector(new SimpleCollisionDetector(world));
+        CollisionDetector collisionDetector = new SimpleCollisionDetector(world);
 
         Agent player = world.registerAgent(new Agent("player", "red", 6, 7, 8, 40), p(12, 12));
         player.setBrain(BrainFactory.puppetBrain(player));
