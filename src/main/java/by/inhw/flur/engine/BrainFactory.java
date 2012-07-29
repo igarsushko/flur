@@ -1,6 +1,8 @@
 package by.inhw.flur.engine;
 
 import by.inhw.flur.engine.steering.Arrive;
+import by.inhw.flur.engine.steering.BlendedSteering;
+import by.inhw.flur.engine.steering.BlendedSteering.WeightedSteering;
 import by.inhw.flur.engine.steering.CollisionAvoidance;
 import by.inhw.flur.engine.steering.Evade;
 import by.inhw.flur.engine.steering.Flee;
@@ -239,18 +241,31 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain obstacleAvoidance(final Agent agent, final CollisionDetector collisionDetector)
+    public static Brain obstacleAvoidanceAndWander(final Agent agent, final CollisionDetector collisionDetector)
     {
         Brain brain = new Brain()
         {
-            Steering steering = new ObstacleAvoidance(agent, collisionDetector);
+            Steering obstacleAvoidance = new ObstacleAvoidance(agent, collisionDetector);
+            Steering wander = new Wander(agent);
+            Steering blendedSteering;
+
+            {
+                WeightedSteering w1 = new WeightedSteering(obstacleAvoidance, 3);
+                WeightedSteering w2 = new WeightedSteering(wander, 1);
+
+                blendedSteering = new BlendedSteering(agent, w1, w2);
+
+            }
 
             public SteeringOutput nextMove()
             {
-                SteeringOutput steeringOut = steering.getSteering();
+                SteeringOutput steeringOut = blendedSteering.getSteering();
 
-                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
-                steeringOut.setRotation(rotation);
+                if (steeringOut.getRotation() == 0)
+                {
+                    double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                    steeringOut.setRotation(rotation);
+                }
 
                 return steeringOut;
             }

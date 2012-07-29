@@ -312,4 +312,16 @@ public class VectorUtil
 
         return new Point(xNew, yNew);
     }
+
+    public static void clipVectorToMax(Point vector, double maxValue)
+    {
+        // crop max velocity and rotation
+        double magnitude = vector.length();
+        if (magnitude > maxValue)
+        {
+            vector.normalize();
+            vector.multiplySelf(maxValue);
+        }
+
+    }
 }

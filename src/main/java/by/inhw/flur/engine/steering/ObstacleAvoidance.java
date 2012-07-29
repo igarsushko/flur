@@ -12,7 +12,7 @@ import by.inhw.flur.util.VectorUtil;
 
 public class ObstacleAvoidance implements Steering
 {
-    public static boolean debug = false;
+    public static boolean debug = true;
 
     private Agent agent;
     private CollisionDetector collisionDetector;

@@ -17,6 +17,22 @@ public class SteeringOutput
         this.rotation = rotation;
     }
 
+    public void multiplySelf(double scalar)
+    {
+        velocity.multiplySelf(scalar);
+        rotation *= scalar;
+    }
+
+    public void addToSelf(SteeringOutput steering)
+    {
+        if (steering.getVelocity() != null)
+        {
+            velocity.addToSelf(steering.getVelocity());
+        }
+
+        rotation += steering.getRotation();
+    }
+
     public void setVelocity(Point velocity)
     {
         this.velocity = velocity.createCopy();
