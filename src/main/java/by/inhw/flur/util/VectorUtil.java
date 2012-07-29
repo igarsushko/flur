@@ -62,6 +62,11 @@ public class VectorUtil
         return new Point(p1.getX() + p2.getX(), p1.getY() + p2.getY(), p1.getZ() + p2.getZ());
     }
 
+    public static Point mult(Point p, double s)
+    {
+        return new Point(p.getX() * s, p.getY() * s, p.getZ() * s);
+    }
+
     /**
      * Return the nearest point on line p1->p2, from point p3. Assuming infinite
      * extent in both directions.

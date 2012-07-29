@@ -10,8 +10,8 @@ import by.inhw.flur.platform.swing.Debugger;
 
 public class FollowPath implements Steering
 {
-    private Agent agent;
-    private Path path;
+    protected Agent agent;
+    protected Path path;
 
     public static boolean debug = true;
     public static String AGENT_PREV_POS_ON_PATH = "AGENT_PREV_POS_ON_PATH";
@@ -38,7 +38,8 @@ public class FollowPath implements Steering
         }
 
         // 2. Find the current position on the path
-        double currentParam = path.getParam(agent.getPosition(), prevPos, isForward);
+        Point agentPosition = getAgentPosition();
+        double currentParam = path.getParam(agentPosition, prevPos, isForward);
         agent.putData(AGENT_PREV_POS_ON_PATH, new Double(currentParam));
         if (debug)
             Debugger.log("CurrPos: ", currentParam);
@@ -61,5 +62,10 @@ public class FollowPath implements Steering
         steering.setRotation(desiredRotation);
 
         return steering;
+    }
+
+    protected Point getAgentPosition()
+    {
+        return agent.getPosition();
     }
 }
