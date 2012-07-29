@@ -16,6 +16,7 @@ public class Flee implements Steering
         this.persuader = persuader;
     }
 
+    @Override
     public SteeringOutput getSteering()
     {
         Point persuaderPosition = persuader.getPosition();

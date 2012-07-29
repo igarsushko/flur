@@ -12,6 +12,7 @@ public class Pursue extends Seek
         super(agent, target);
     }
 
+    @Override
     public SteeringOutput getSteering()
     {
         Point targetPredictedPosition = PredictPosition.predictPosition(agent, target);

@@ -28,6 +28,7 @@ public class FollowPath implements Steering
         this.path = path;
     }
 
+    @Override
     public SteeringOutput getSteering()
     {
         // 1. Get agent's current previous position on path

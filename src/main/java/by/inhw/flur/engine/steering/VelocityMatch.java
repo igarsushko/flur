@@ -1,18 +1,30 @@
 package by.inhw.flur.engine.steering;
 
+import static by.inhw.flur.util.VectorUtil.sub;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 
-public class VelocityMatch
+public class VelocityMatch implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent, Agent target)
+    private Agent agent;
+    private Agent target;
+
+    double timeToTarget = 0.1;
+
+    public VelocityMatch(Agent agent, Agent target)
+    {
+        this.agent = agent;
+        this.target = target;
+    }
+
+    @Override
+    public SteeringOutput getSteering()
     {
         double maxAcceleration = agent.getMaxAcceleration();
-        double timeToTarget = 0.1;
 
         // Acceleration tries to get to the target velocity
-        Point velocity = target.getVelocity().substract(agent.getVelocity());
+        Point velocity = sub(target.getVelocity(), agent.getVelocity());
         velocity.devideSelf(timeToTarget);
 
         // Check if the acceleration is too fast

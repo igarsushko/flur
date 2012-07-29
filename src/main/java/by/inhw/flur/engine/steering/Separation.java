@@ -24,6 +24,7 @@ public class Separation implements Steering
         this.targets = targets;
     }
 
+    @Override
     public SteeringOutput getSteering()
     {
         SteeringOutput steering = new SteeringOutput();

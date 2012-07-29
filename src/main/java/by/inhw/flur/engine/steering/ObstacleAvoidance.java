@@ -32,6 +32,7 @@ public class ObstacleAvoidance implements Steering
         this.collisionDetector = collisionDetector;
     }
 
+    @Override
     public SteeringOutput getSteering()
     {
         // 1. Calculate the target to delegate to seek

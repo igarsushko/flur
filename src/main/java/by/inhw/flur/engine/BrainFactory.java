@@ -14,7 +14,6 @@ import by.inhw.flur.engine.steering.Steering;
 import by.inhw.flur.engine.steering.VelocityMatch;
 import by.inhw.flur.engine.steering.Wander;
 import by.inhw.flur.engine.steering.collision.CollisionDetector;
-import by.inhw.flur.engine.steering.facing.Align;
 import by.inhw.flur.engine.steering.facing.LookWhereYoureGoing;
 import by.inhw.flur.engine.steering.path.Path;
 import by.inhw.flur.model.Agent;
@@ -63,33 +62,35 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain matchVelocityAndAlign(final Agent persuader, final Agent target)
+    public static Brain velocityMatch(final Agent agent, final Agent target)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new VelocityMatch(agent, target);
+
             public SteeringOutput nextMove()
             {
-                SteeringOutput steering = VelocityMatch.getSteering(persuader, target);
+                SteeringOutput steeringOut = steering.getSteering();
 
-                double rotation = Align.getAlign(persuader, target);
-                steering.setRotation(rotation);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steeringOut.setRotation(rotation);
 
-                return steering;
+                return steeringOut;
             }
         };
 
         return brain;
     }
 
-    public static Brain arrive(final Agent persuader, final Agent target)
+    public static Brain arrive(final Agent agent, final Agent target)
     {
         Brain brain = new Brain()
         {
-            Steering steering = new Arrive(persuader, target);
+            Steering steering = new Arrive(agent, target);
 
             public SteeringOutput nextMove()
             {
-                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(persuader);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
 
                 SteeringOutput steeringOut = steering.getSteering();
                 steeringOut.setRotation(rotation);

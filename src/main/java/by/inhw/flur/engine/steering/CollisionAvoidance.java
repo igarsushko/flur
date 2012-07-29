@@ -27,9 +27,10 @@ public class CollisionAvoidance implements Steering
         this.targets = targets;
     }
 
+    @Override
     public SteeringOutput getSteering()
     {
-        // Find the target that’s closest to collision
+        // Find the target thatï¿½s closest to collision
         // Store the first collision time
         double shortestTime = Double.MAX_VALUE;
 
@@ -41,7 +42,7 @@ public class CollisionAvoidance implements Steering
         Point firstRelativePos = null;
         Point firstRelativeVel = null;
 
-        // 1. Find the target that’s closest to collision
+        // 1. Find the target thatï¿½s closest to collision
         for (Agent target : targets)
         {
             // Calculate the time to collision
@@ -80,7 +81,7 @@ public class CollisionAvoidance implements Steering
             return Wander.getSteering(agent);
         }
 
-        // If we’re going to hit exactly, or if we’re already
+        // If weï¿½re going to hit exactly, or if weï¿½re already
         // colliding, then do the steering based on current position.
         Point relativePos = null;
         if (firstMinSeparation <= 0 || firstDistance < radius)
