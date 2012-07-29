@@ -5,9 +5,14 @@ import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 
-public class Pursue
+public class Pursue extends Seek
 {
-    public static SteeringOutput getSteering(Agent agent, Agent target)
+    public Pursue(Agent agent, Agent target)
+    {
+        super(agent, target);
+    }
+
+    public SteeringOutput getSteering()
     {
         Point targetPredictedPosition = PredictPosition.predictPosition(agent, target);
 

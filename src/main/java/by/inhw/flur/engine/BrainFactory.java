@@ -15,7 +15,6 @@ import by.inhw.flur.engine.steering.VelocityMatch;
 import by.inhw.flur.engine.steering.Wander;
 import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.engine.steering.facing.Align;
-import by.inhw.flur.engine.steering.facing.Face;
 import by.inhw.flur.engine.steering.facing.LookWhereYoureGoing;
 import by.inhw.flur.engine.steering.path.Path;
 import by.inhw.flur.model.Agent;
@@ -24,18 +23,20 @@ import by.inhw.flur.model.movement.SteeringOutput;
 
 public class BrainFactory
 {
-    public static Brain seekAndLookWhereYoureGoing(final Agent persuader, final Agent target)
+    public static Brain seek(final Agent agent, final Agent target)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Seek(agent, target);
+
             public SteeringOutput nextMove()
             {
-                SteeringOutput steering = Seek.getSteering(persuader, target);
+                SteeringOutput steeringOut = steering.getSteering();
 
-                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(persuader);
-                steering.setRotation(rotation);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steeringOut.setRotation(rotation);
 
-                return steering;
+                return steeringOut;
             }
         };
 
@@ -100,54 +101,20 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain pursueAndAlign(final Agent persuader, final Agent target)
+    public static Brain pursue(final Agent agent, final Agent target)
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Pursue(agent, target);
+
             public SteeringOutput nextMove()
             {
-                double rotation = Align.getAlign(persuader, target);
+                SteeringOutput steeringOut = steering.getSteering();
 
-                SteeringOutput steering = Pursue.getSteering(persuader, target);
-                steering.setRotation(rotation);
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steeringOut.setRotation(rotation);
 
-                return steering;
-            }
-        };
-
-        return brain;
-    }
-
-    public static Brain pursueAndFace(final Agent persuader, final Agent target)
-    {
-        Brain brain = new Brain()
-        {
-            public SteeringOutput nextMove()
-            {
-                double rotation = Face.getFacing(persuader, target);
-
-                SteeringOutput steering = Pursue.getSteering(persuader, target);
-                steering.setRotation(rotation);
-
-                return steering;
-            }
-        };
-
-        return brain;
-    }
-
-    public static Brain pursueAndLookWhereYoureGoing(final Agent persuader, final Agent target)
-    {
-        Brain brain = new Brain()
-        {
-            public SteeringOutput nextMove()
-            {
-                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(persuader);
-
-                SteeringOutput steering = Pursue.getSteering(persuader, target);
-                steering.setRotation(rotation);
-
-                return steering;
+                return steeringOut;
             }
         };
 

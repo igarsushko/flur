@@ -4,11 +4,22 @@ import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 
-public class Seek
+public class Seek implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent, Agent target)
+    protected Agent agent;
+    protected Agent target;
+
+    public Seek(Agent agent, Agent target)
     {
-        return getSteering(agent, target.getPosition());
+        this.agent = agent;
+        this.target = target;
+    }
+
+    public SteeringOutput getSteering()
+    {
+        Point targetPosition = target.getPosition();
+
+        return Seek.getSteering(agent, targetPosition);
     }
 
     public static SteeringOutput getSteering(Agent agent, Point targetPosition)
