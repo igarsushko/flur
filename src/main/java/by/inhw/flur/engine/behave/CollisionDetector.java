@@ -4,5 +4,5 @@ import by.inhw.flur.model.movement.Point;
 
 public interface CollisionDetector
 {
-    Collision getCollision(Point agentPosition, Point rayVector);
+    Collision getCollision(Point agentPosition, Point... rayVector);
 }

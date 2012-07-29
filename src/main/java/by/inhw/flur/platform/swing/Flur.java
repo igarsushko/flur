@@ -16,6 +16,7 @@ import by.inhw.flur.platform.swing.controller.ControllerListener;
 import by.inhw.flur.platform.swing.render.WorldRendererImpl;
 import by.inhw.flur.util.LevelLoader;
 import by.inhw.flur.util.PropertiesManager;
+import by.inhw.flur.util.Timing;
 
 public class Flur
 {

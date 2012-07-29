@@ -3,6 +3,8 @@ package by.inhw.flur.util;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import by.inhw.flur.model.movement.Point;
 
 public class VectorUtil
@@ -288,5 +290,21 @@ public class VectorUtil
         double z = (Ax * By) - (Ay * Bx);
 
         return new Point(x, y, z);
+    }
+
+    public static Point rotateVector2d(Point vec, double angle)
+    {
+        angle = Math.toRadians(angle);
+
+        double x = vec.getX();
+        double y = vec.getY();
+
+        double ca = cos(angle);
+        double sa = sin(angle);
+
+        double xNew = x * ca - y * sa;
+        double yNew = x * sa + y * ca;
+
+        return new Point(xNew, yNew);
     }
 }

@@ -1,5 +1,10 @@
 package by.inhw.flur.engine.behave;
 
+import static by.inhw.flur.util.VectorUtil.add;
+import static by.inhw.flur.util.VectorUtil.cross;
+import static by.inhw.flur.util.VectorUtil.p;
+import static by.inhw.flur.util.VectorUtil.sub;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +13,7 @@ import java.util.Map;
 import by.inhw.flur.model.World;
 import by.inhw.flur.model.movement.Line;
 import by.inhw.flur.model.movement.Point;
-import by.inhw.flur.platform.swing.Debugger;
 import by.inhw.flur.util.VectorUtil;
-import static by.inhw.flur.util.VectorUtil.p;
-import static by.inhw.flur.util.VectorUtil.add;
-import static by.inhw.flur.util.VectorUtil.sub;
-import static by.inhw.flur.util.VectorUtil.cross;
 
 public class SimpleCollisionDetector implements CollisionDetector
 {
@@ -28,24 +28,14 @@ public class SimpleCollisionDetector implements CollisionDetector
         collectCollisionInfo(this.world.getMap());
     }
 
-    public Collision getCollision(Point agentPosition, Point rayVector)
+    public Collision getCollision(Point agentPosition, Point... rayVectors)
     {
         Collision collision = null;
         collisionPointsAndLines.clear();
 
-        Point p3 = agentPosition;
-        Point p4 = add(agentPosition, rayVector);
-        for (Line line : obstacleLines)
+        for (Point rayVector : rayVectors)
         {
-            // Debugger.logVector(line.toString(), line);
-            Point p1 = line.getBegin();
-            Point p2 = line.getEnd();
-
-            Point collisionPoint = VectorUtil.getLineIntersection2d(p1, p2, p3, p4);
-            if (collisionPoint != null)
-            {
-                collisionPointsAndLines.put(collisionPoint, line);
-            }
+            findCollision(agentPosition, rayVector);
         }
 
         // find the closest collision
@@ -74,6 +64,25 @@ public class SimpleCollisionDetector implements CollisionDetector
         }
 
         return collision;
+    }
+
+    void findCollision(Point agentPosition, Point rayVector)
+    {
+
+        Point p3 = agentPosition;
+        Point p4 = add(agentPosition, rayVector);
+        for (Line line : obstacleLines)
+        {
+            // Debugger.logVector(line.toString(), line);
+            Point p1 = line.getBegin();
+            Point p2 = line.getEnd();
+
+            Point collisionPoint = VectorUtil.getLineIntersection2d(p1, p2, p3, p4);
+            if (collisionPoint != null)
+            {
+                collisionPointsAndLines.put(collisionPoint, line);
+            }
+        }
     }
 
     void collectCollisionInfo(int[][] map)
