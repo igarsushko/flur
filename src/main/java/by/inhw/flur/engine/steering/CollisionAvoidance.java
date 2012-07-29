@@ -12,14 +12,23 @@ import by.inhw.flur.model.movement.SteeringOutput;
  * occur first and to react to this character only. Once this imminent collision
  * is avoided, the steering behavior can then react to more distant characters.
  */
-public class CollisionAvoidance
+public class CollisionAvoidance implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent, Agent... targets)
-    {
-        // Holds the collision radius of a character (we assume
-        // all characters have the same radius here)
-        double radius = 5;
+    private Agent agent;
+    private Agent[] targets;
 
+    // Holds the collision radius of a character (we assume
+    // all characters have the same radius here)
+    double radius = 5;
+
+    public CollisionAvoidance(Agent agent, Agent... targets)
+    {
+        this.agent = agent;
+        this.targets = targets;
+    }
+
+    public SteeringOutput getSteering()
+    {
         // Find the target that’s closest to collision
         // Store the first collision time
         double shortestTime = Double.MAX_VALUE;

@@ -239,17 +239,19 @@ public class BrainFactory
     {
         Brain brain = new Brain()
         {
+            Steering steering = new CollisionAvoidance(agent, targets);
+
             public SteeringOutput nextMove()
             {
-                SteeringOutput steering = CollisionAvoidance.getSteering(agent, targets);
+                SteeringOutput steeringOut = steering.getSteering();
 
-                if (steering.getRotation() == 0)
+                if (steeringOut.getRotation() == 0)
                 {
                     double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
-                    steering.setRotation(rotation);
+                    steeringOut.setRotation(rotation);
                 }
 
-                return steering;
+                return steeringOut;
             }
         };
 
