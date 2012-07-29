@@ -202,9 +202,11 @@ public class BrainFactory
     {
         Brain brain = new Brain()
         {
+            Steering steering = new Separation(agent, targets);
+
             public SteeringOutput nextMove()
             {
-                return Separation.getSteering(agent, targets);
+                return steering.getSteering();
             }
         };
 

@@ -5,18 +5,27 @@ import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.model.movement.SteeringOutput;
 import by.inhw.flur.util.VectorUtil;
 
-public class Separation
+public class Separation implements Steering
 {
-    public static SteeringOutput getSteering(Agent agent, Agent... targets)
+    private Agent agent;
+    private Agent[] targets;
+
+    // minimal distance between agent and targets
+    private double threshold = 3;
+
+    // Holds the constant coefficient of decay for the
+    // inverse square law force
+    // use positive for attraction
+    private double decayCoefficient = -8;
+
+    public Separation(Agent agent, Agent... targets)
     {
-        // minimal distance between agent and targets
-        double threshold = 3;
+        this.agent = agent;
+        this.targets = targets;
+    }
 
-        // Holds the constant coefficient of decay for the
-        // inverse square law force
-        // use positive for attraction
-        double decayCoefficient = -8;
-
+    public SteeringOutput getSteering()
+    {
         SteeringOutput steering = new SteeringOutput();
         for (Agent target : targets)
         {
