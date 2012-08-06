@@ -127,12 +127,11 @@ public class Debugger
     {
         vectors.put(id, vector);
     }
-    
+
     public static void unlogVector(String id)
     {
         vectors.remove(id);
     }
-
 
     public static void logPoint(String id, Point point)
     {

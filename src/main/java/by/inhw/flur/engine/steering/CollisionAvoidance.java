@@ -19,7 +19,7 @@ public class CollisionAvoidance implements Steering
 
     // Holds the collision radius of a character (we assume
     // all characters have the same radius here)
-    double radius = 5;
+    double radius = 1;
 
     public CollisionAvoidance(Agent agent, Agent... targets)
     {
@@ -30,7 +30,7 @@ public class CollisionAvoidance implements Steering
     @Override
     public SteeringOutput getSteering()
     {
-        // Find the target that�s closest to collision
+        // Find the target that's closest to collision
         // Store the first collision time
         double shortestTime = Double.MAX_VALUE;
 
@@ -42,7 +42,7 @@ public class CollisionAvoidance implements Steering
         Point firstRelativePos = null;
         Point firstRelativeVel = null;
 
-        // 1. Find the target that�s closest to collision
+        // 1. Find the target that's closest to collision
         for (Agent target : targets)
         {
             // Calculate the time to collision
@@ -75,7 +75,7 @@ public class CollisionAvoidance implements Steering
 
         // 2. Calculate the steering
 
-        // If we have no target, then exit with zero accelleration
+        // If we have no target, then exit with zero acceleration
         if (firstTarget == null)
         {
             return new SteeringOutput();

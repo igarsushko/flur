@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import by.inhw.flur.engine.steering.ObstacleAvoidance;
 import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.platform.swing.Debugger;
@@ -60,7 +61,8 @@ public class ControllerListener extends KeyAdapter
         }
         else if (c == KeyEvent.VK_F5)
         {
-            Debugger.toogleDrawPath();
+            ObstacleAvoidance.debug = !ObstacleAvoidance.debug;
+            // Debugger.toogleDrawPath();
         }
         else if (c == KeyEvent.VK_UP)
         {

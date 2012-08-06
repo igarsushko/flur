@@ -49,9 +49,14 @@ public class ObstacleAvoidance implements Steering
         // Find the collision
         Collision collision = collisionDetector.getCollision(agent.getPosition(), rayVector, whiskerLeft, whiskerRight);
 
+        String debugId = "Collision point " + agent.getName();
+        Debugger.unlogVector(debugId);
+        Debugger.unlogVector(debugId + "wl");
+        Debugger.unlogVector(debugId + "wr");
+        Debugger.unlogPoint(debugId);
+
         if (debug)
         {
-            String debugId = "Collision point " + agent.getName();
             if (collision != null)
             {
                 Debugger.logPoint(debugId, collision.getPosition());
@@ -65,6 +70,7 @@ public class ObstacleAvoidance implements Steering
                 Debugger.logVector(debugId + "wr",
                         new Line(agent.getPosition(), add(agent.getPosition(), whiskerRight)));
             }
+
         }
 
         if (collision == null)

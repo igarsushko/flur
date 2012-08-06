@@ -9,6 +9,7 @@ import by.inhw.flur.engine.steering.Flee;
 import by.inhw.flur.engine.steering.FollowPath;
 import by.inhw.flur.engine.steering.ObstacleAvoidance;
 import by.inhw.flur.engine.steering.PredictiveFollowPath;
+import by.inhw.flur.engine.steering.PrioritySteering;
 import by.inhw.flur.engine.steering.Pursue;
 import by.inhw.flur.engine.steering.Seek;
 import by.inhw.flur.engine.steering.Separation;
@@ -222,11 +223,20 @@ public class BrainFactory
     {
         Brain brain = new Brain()
         {
-            Steering steering = new CollisionAvoidance(agent, targets);
+            Steering collisionAvoidance = new CollisionAvoidance(agent, targets);
+            Steering wander = new Wander(agent);
+            Steering blendedSteering;
+
+            {
+                WeightedSteering w1 = new WeightedSteering(collisionAvoidance, 1);
+                WeightedSteering w2 = new WeightedSteering(wander, 0.5);
+
+                blendedSteering = new BlendedSteering(agent, w1, w2);
+            }
 
             public SteeringOutput nextMove()
             {
-                SteeringOutput steeringOut = steering.getSteering();
+                SteeringOutput steeringOut = blendedSteering.getSteering();
 
                 if (steeringOut.getRotation() == 0)
                 {
@@ -241,7 +251,7 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain obstacleAvoidanceAndWander(final Agent agent, final CollisionDetector collisionDetector)
+    public static Brain blendedObstacleAvoidanceAndWander(final Agent agent, final CollisionDetector collisionDetector)
     {
         Brain brain = new Brain()
         {
@@ -260,6 +270,42 @@ public class BrainFactory
             public SteeringOutput nextMove()
             {
                 SteeringOutput steeringOut = blendedSteering.getSteering();
+
+                if (steeringOut.getRotation() == 0)
+                {
+                    double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                    steeringOut.setRotation(rotation);
+                }
+
+                return steeringOut;
+            }
+        };
+
+        return brain;
+    }
+
+    public static Brain priorityObstacleAvoidanceAndWander(final Agent agent, final CollisionDetector collisionDetector)
+    {
+        Brain brain = new Brain()
+        {
+            Steering obstacleAvoidance = new ObstacleAvoidance(agent, collisionDetector);
+            Steering wander = new Wander(agent);
+            Steering prioritySteering;
+
+            {
+                WeightedSteering obstacleAvoidanceWeighted = new WeightedSteering(obstacleAvoidance, 1);
+                WeightedSteering wanderWeighted = new WeightedSteering(wander, 1);
+
+                BlendedSteering blend_0 = new BlendedSteering(agent, obstacleAvoidanceWeighted);
+                BlendedSteering blend_1 = new BlendedSteering(agent, wanderWeighted);
+
+                prioritySteering = new PrioritySteering(blend_0, blend_1);
+
+            }
+
+            public SteeringOutput nextMove()
+            {
+                SteeringOutput steeringOut = prioritySteering.getSteering();
 
                 if (steeringOut.getRotation() == 0)
                 {
