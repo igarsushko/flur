@@ -11,6 +11,9 @@ import by.inhw.flur.util.Timing;
 
 public class World extends WorldPart
 {
+    public static final double G = 9.81;
+    public static final Point GRAVITY = new Point(0, 0, -G);
+
     Map<String, Agent> agents = new HashMap<String, Agent>();
 
     private final int[][] map;
