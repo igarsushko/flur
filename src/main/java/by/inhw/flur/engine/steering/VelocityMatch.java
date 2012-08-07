@@ -21,10 +21,15 @@ public class VelocityMatch implements Steering
     @Override
     public SteeringOutput getSteering()
     {
+        return VelocityMatch.matchVelocity(agent, target.getVelocity(), timeToTarget);
+    }
+
+    public static SteeringOutput matchVelocity(Agent agent, Point targetVelocity, double timeToTarget)
+    {
         double maxAcceleration = agent.getMaxAcceleration();
 
         // Acceleration tries to get to the target velocity
-        Point velocity = sub(target.getVelocity(), agent.getVelocity());
+        Point velocity = sub(targetVelocity, agent.getVelocity());
         velocity.devideSelf(timeToTarget);
 
         // Check if the acceleration is too fast

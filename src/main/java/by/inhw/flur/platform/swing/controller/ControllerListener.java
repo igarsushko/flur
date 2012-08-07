@@ -6,40 +6,76 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import by.inhw.flur.engine.Controller;
 import by.inhw.flur.engine.steering.ObstacleAvoidance;
-import by.inhw.flur.model.Agent;
 import by.inhw.flur.model.movement.Point;
 import by.inhw.flur.platform.swing.Debugger;
 import by.inhw.flur.util.Timing;
 
-public class ControllerListener extends KeyAdapter
+public class ControllerListener extends KeyAdapter implements Controller
 {
-    int state = IDLE;
-    static final int IDLE = 0;
-    static final int UP = 1;
-    static final int DOWN = 2;
-    static final int LEFT = 3;
-    static final int RIGHT = 4;
-    Agent agent;
+    boolean isIdle = false;
+    boolean isUp = false;
+    boolean isDown = false;
+    boolean isLeft = false;
+    boolean isRight = false;
     Set<Integer> pressedKeys = Collections.synchronizedSet(new HashSet<Integer>());
+    private Point currentVelocity = new Point();
 
     public ControllerListener()
     {
-    }
-
-    public ControllerListener(Agent agent)
-    {
-        this.agent = agent;
         runMovementListening();
     }
 
     @Override
     public void keyReleased(KeyEvent e)
     {
-        pressedKeys.remove(new Integer(e.getKeyCode()));
+        int c = e.getKeyCode();
+        pressedKeys.remove(c);
+
+        double curr = 0;
+        if (c == KeyEvent.VK_UP)
+        {
+            curr = currentVelocity.getY();
+            if (curr != 0)
+            {
+                isUp = false;
+                currentVelocity.setY(curr + 1);
+            }
+        }
+        else if (c == KeyEvent.VK_DOWN)
+        {
+
+            curr = currentVelocity.getY();
+            if (curr != 0)
+            {
+                isDown = false;
+                currentVelocity.setY(curr - 1);
+            }
+        }
+        else if (c == KeyEvent.VK_LEFT)
+        {
+            curr = currentVelocity.getX();
+            if (curr != 0)
+            {
+                isLeft = false;
+                currentVelocity.setX(curr + 1);
+            }
+        }
+        else if (c == KeyEvent.VK_RIGHT)
+        {
+            curr = currentVelocity.getX();
+            if (curr != 0)
+            {
+                isRight = false;
+                currentVelocity.setX(curr - 1);
+            }
+        }
+
+        // so double pressed/released key don't glitch
         if (pressedKeys.size() == 0)
         {
-            state = IDLE;
+            isIdle = true;
         }
     }
 
@@ -62,23 +98,30 @@ public class ControllerListener extends KeyAdapter
         else if (c == KeyEvent.VK_F5)
         {
             ObstacleAvoidance.debug = !ObstacleAvoidance.debug;
-            // Debugger.toogleDrawPath();
+        }
+        else if (c == KeyEvent.VK_F6)
+        {
+            Debugger.toogleDrawPath();
         }
         else if (c == KeyEvent.VK_UP)
         {
-            state = UP;
+            isUp = true;
+            isIdle = false;
         }
         else if (c == KeyEvent.VK_DOWN)
         {
-            state = DOWN;
+            isDown = true;
+            isIdle = false;
         }
         else if (c == KeyEvent.VK_LEFT)
         {
-            state = LEFT;
+            isLeft = true;
+            isIdle = false;
         }
         else if (c == KeyEvent.VK_RIGHT)
         {
-            state = RIGHT;
+            isRight = true;
+            isIdle = false;
         }
         pressedKeys.add(new Integer(c));
     }
@@ -89,42 +132,36 @@ public class ControllerListener extends KeyAdapter
         {
             public void run()
             {
-                setName(agent.getName());
+                setName("Controller listener");
                 while (true)
                 {
-                    Point velocity = new Point();
-                    double orientation = 0;
-                    if (state == UP)
+                    if (isIdle)
                     {
-                        velocity.setY(-1);
-                        orientation = Math.toRadians(-180);
-                    }
-                    else if (state == DOWN)
-                    {
-                        velocity.setY(1);
-                        orientation = Math.toRadians(0);
-                    }
-                    else if (state == LEFT)
-                    {
-                        velocity.setX(-1);
-                        orientation = Math.toRadians(-90);
-                    }
-                    else if (state == RIGHT)
-                    {
-                        velocity.setX(1);
-                        orientation = Math.toRadians(90);
-                    }
-
-                    if (state != IDLE)
-                    {
-                        Point currVelocity = agent.getKinematic().getVelocity();
-                        currVelocity.set(velocity.multiply(agent.getMaxSpeed()));
-
-                        agent.getKinematic().setOrientation(orientation);
+                        currentVelocity.setX(0);
+                        currentVelocity.setY(0);
+                        currentVelocity.setZ(0);
                     }
                     else
                     {
-                        agent.getKinematic().getVelocity().set(new Point());
+                        if (isUp)
+                        {
+                            currentVelocity.setY(-1);
+                        }
+
+                        if (isDown)
+                        {
+                            currentVelocity.setY(1);
+                        }
+
+                        if (isLeft)
+                        {
+                            currentVelocity.setX(-1);
+                        }
+
+                        if (isRight)
+                        {
+                            currentVelocity.setX(1);
+                        }
                     }
 
                     try
@@ -138,5 +175,13 @@ public class ControllerListener extends KeyAdapter
                 }
             };
         }.start();
+    }
+
+    @Override
+    public Point getVelocity()
+    {
+        Debugger.log("controller velocity: ", currentVelocity);
+
+        return currentVelocity;
     }
 }

@@ -190,14 +190,22 @@ public class BrainFactory
         return brain;
     }
 
-    public static Brain puppetBrain(final Agent agent)
+    public static Brain puppetBrain(final Agent agent, final Controller controller)
     {
         Brain brain = new Brain()
         {
             public SteeringOutput nextMove()
             {
-                Point currVelocity = agent.getKinematic().getVelocity();
-                return new SteeringOutput(currVelocity, 0);
+                // here normalized velocity comes
+                Point requestedVelocity = controller.getVelocity().createCopy();
+                requestedVelocity.multiplySelf(agent.getMaxSpeed());
+
+                SteeringOutput steeringOut = VelocityMatch.matchVelocity(agent, requestedVelocity, 0.1);
+
+                double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
+                steeringOut.setRotation(rotation);
+
+                return steeringOut;
             }
         };
 
