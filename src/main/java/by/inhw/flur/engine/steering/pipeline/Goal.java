@@ -37,6 +37,7 @@ public class Goal
         {
             velocity.set(goal.velocity);
         }
+
         if (goal.hasRotation)
         {
             rotation = goal.rotation;

@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.swing.JFrame;
 
 import by.inhw.flur.engine.BrainFactory;
+import by.inhw.flur.engine.steering.Jump;
 import by.inhw.flur.engine.steering.ObstacleAvoidance;
 import by.inhw.flur.engine.steering.collision.CollisionDetector;
 import by.inhw.flur.engine.steering.collision.SimpleCollisionDetector;
@@ -50,19 +51,11 @@ public class Flur
         Agent player = world.registerAgent(new Agent("player", "red", 9, 60, 25, 200), p(12, 12));
         player.setBrain(BrainFactory.puppetBrain(player, keyListener));
 
-        // Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 3, 60, 10,
-        // 40), p(5, 5));
-        // Agent bot2 = world.registerAgent(new Agent("bot2", "blue", 3, 60, 10,
-        // 40), p(8, 8));
-        // Agent bot3 = world.registerAgent(new Agent("bot3", "blue", 3, 60, 10,
-        // 40), p(15, 15));
-        //
-        // bot1.setBrain(BrainFactory.priorityObstacleAvoidanceAndWander(bot1,
-        // collisionDetector));
-        // bot2.setBrain(BrainFactory.priorityObstacleAvoidanceAndWander(bot2,
-        // collisionDetector));
-        // bot3.setBrain(BrainFactory.priorityObstacleAvoidanceAndWander(bot3,
-        // collisionDetector));
+        // Agent bot1 = world.registerAgent(new Agent("bot1", "blue", 6, 60, 10,
+        // 40), p(3, 3));
+        // Jump jump = new Jump(bot1);
+        // bot1.setBrain(BrainFactory.jump(bot1, jump));
+        // jump.setJumpPonint(p(2, 2), p(10, 10));
 
         world.bringWorldToLive();
         frame.pack();

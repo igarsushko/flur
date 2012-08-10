@@ -7,6 +7,7 @@ import by.inhw.flur.engine.steering.CollisionAvoidance;
 import by.inhw.flur.engine.steering.Evade;
 import by.inhw.flur.engine.steering.Flee;
 import by.inhw.flur.engine.steering.FollowPath;
+import by.inhw.flur.engine.steering.Jump;
 import by.inhw.flur.engine.steering.ObstacleAvoidance;
 import by.inhw.flur.engine.steering.PredictiveFollowPath;
 import by.inhw.flur.engine.steering.PrioritySteering;
@@ -196,12 +197,17 @@ public class BrainFactory
         {
             public SteeringOutput nextMove()
             {
+                double maxSpeed = agent.getMaxSpeed();
+                double maxZVeloctity = agent.getMaxZVelocity();
+
                 // here normalized velocity comes
                 Point requestedVelocity = controller.getVelocity().createCopy();
-                requestedVelocity.multiplySelf(agent.getMaxSpeed());
+                requestedVelocity.setX(requestedVelocity.getX() * maxSpeed);
+                requestedVelocity.setY(requestedVelocity.getY() * maxSpeed);
 
-                SteeringOutput steeringOut = VelocityMatch.matchVelocity(agent, requestedVelocity, 0.1);
+                requestedVelocity.setZ(requestedVelocity.getZ() * maxZVeloctity);
 
+                SteeringOutput steeringOut = VelocityMatch.matchVelocity(agent, requestedVelocity);
                 double rotation = LookWhereYoureGoing.getWhereYoureGoingFacing(agent);
                 steeringOut.setRotation(rotation);
 
@@ -327,4 +333,18 @@ public class BrainFactory
 
         return brain;
     }
+
+    public static Brain jump(final Agent agent, final Jump jump)
+    {
+        Brain brain = new Brain()
+        {
+            public SteeringOutput nextMove()
+            {
+                return jump.getSteering();
+            }
+        };
+
+        return brain;
+    }
+
 }

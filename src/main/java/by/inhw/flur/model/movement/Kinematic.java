@@ -1,6 +1,6 @@
 package by.inhw.flur.model.movement;
 
-import by.inhw.flur.util.VectorUtil;
+import by.inhw.flur.model.World;
 
 /**
  * Velocities are given in meters per second.
@@ -10,6 +10,13 @@ public class Kinematic extends Static
     Point velocity;
     // angular acceleration, rad per sec
     double rotation;
+
+    public Kinematic()
+    {
+        super(new Point(0, 0, 0), 0);
+        velocity = new Point(0, 0, 0);
+        rotation = 0;
+    }
 
     public Kinematic(Point position, double orientation, Point velocity)
     {
@@ -35,7 +42,8 @@ public class Kinematic extends Static
         // some forces decrease existing
         else
         {
-            velocity.devideSelf(1.25);
+            velocity.setX(velocity.getX() / 1.25);
+            velocity.setX(velocity.getY() / 1.25);
         }
 
         // orientation
@@ -55,27 +63,6 @@ public class Kinematic extends Static
         }
     }
 
-    /**
-     * The simple version of update, directly update position from velocity and
-     * face in the direction of movement.
-     */
-    public void kinematicUpdate(SteeringOutput steering, double time, double maxSpeed, double maxRotationSpeed)
-    {
-        position.addToSelf(velocity.multiply(time * maxSpeed));
-
-        // get orientation from velocity
-        if (steering.velocity.isNonZero())
-        {
-            double desiredOrientation = VectorUtil.getOrientationFromVector(steering.velocity);
-            double diff = desiredOrientation - orientation;
-            diff = VectorUtil.normalizeOrientation(diff);
-            orientation += diff * maxRotationSpeed * time;
-            orientation = VectorUtil.normalizeOrientation(orientation);
-        }
-
-        velocity.set(steering.velocity);
-    }
-
     public Point getVelocity()
     {
         return velocity;
@@ -84,15 +71,5 @@ public class Kinematic extends Static
     public double getRotation()
     {
         return rotation;
-    }
-
-    public void setVelocity(Point velocity)
-    {
-        if (this.velocity == null)
-        {
-            this.velocity = new Point();
-        }
-
-        this.velocity.set(velocity);
     }
 }

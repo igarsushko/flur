@@ -19,6 +19,7 @@ public class ControllerListener extends KeyAdapter implements Controller
     boolean isDown = false;
     boolean isLeft = false;
     boolean isRight = false;
+    boolean isSpace = false;
     Set<Integer> pressedKeys = Collections.synchronizedSet(new HashSet<Integer>());
     private Point currentVelocity = new Point();
 
@@ -69,6 +70,15 @@ public class ControllerListener extends KeyAdapter implements Controller
             {
                 isRight = false;
                 currentVelocity.setX(curr - 1);
+            }
+        }
+        else if (c == KeyEvent.VK_SPACE)
+        {
+            curr = currentVelocity.getZ();
+            if (curr != 0)
+            {
+                isSpace = false;
+                currentVelocity.setZ(curr - 1);
             }
         }
 
@@ -123,6 +133,11 @@ public class ControllerListener extends KeyAdapter implements Controller
             isRight = true;
             isIdle = false;
         }
+        else if (c == KeyEvent.VK_SPACE)
+        {
+            isSpace = true;
+            isIdle = false;
+        }
         pressedKeys.add(new Integer(c));
     }
 
@@ -162,6 +177,11 @@ public class ControllerListener extends KeyAdapter implements Controller
                         {
                             currentVelocity.setX(1);
                         }
+
+                        if (isSpace)
+                        {
+                            currentVelocity.setZ(1);
+                        }
                     }
 
                     try
@@ -180,8 +200,6 @@ public class ControllerListener extends KeyAdapter implements Controller
     @Override
     public Point getVelocity()
     {
-        Debugger.log("controller velocity: ", currentVelocity);
-
         return currentVelocity;
     }
 }

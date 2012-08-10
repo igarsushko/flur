@@ -20,6 +20,7 @@ public class Agent extends WorldPart
     private double maxAcceleration;
     private double maxRotationSpeed;
     private double maxAngularAcceleration;
+    private double maxZVelocity;
     private World world;
     private Map<String, Object> data;
 
@@ -34,6 +35,7 @@ public class Agent extends WorldPart
         this.maxAngularAcceleration = maxAngularAcceleration;
         this.kinematic = new Kinematic(new Point(), 0, new Point());
         this.data = new HashMap<String, Object>();
+        this.maxZVelocity = 500;
     }
 
     public void setBrain(Brain brain)
@@ -55,6 +57,7 @@ public class Agent extends WorldPart
     {
         kinematic.update(steering, timeInSeconds, maxSpeed, maxRotationSpeed);
         world.normalizeCoordinates2D(this);
+        world.normalizeHeight(this);
         renderer.renderAgent();
     }
 
@@ -71,6 +74,11 @@ public class Agent extends WorldPart
     public double y()
     {
         return kinematic.getPosition().getY();
+    }
+
+    public double z()
+    {
+        return kinematic.getPosition().getZ();
     }
 
     public double getOrientation()
@@ -141,5 +149,15 @@ public class Agent extends WorldPart
     public Object getData(String id)
     {
         return data.get(id);
+    }
+
+    public double getMaxZVelocity()
+    {
+        return maxZVelocity;
+    }
+
+    public boolean isInAir()
+    {
+        return kinematic.getPosition().getZ() > 0;
     }
 }

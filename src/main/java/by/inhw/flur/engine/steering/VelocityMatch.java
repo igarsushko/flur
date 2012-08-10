@@ -7,24 +7,24 @@ import by.inhw.flur.model.movement.SteeringOutput;
 
 public class VelocityMatch implements Steering
 {
-    private Agent agent;
-    private Agent target;
+    protected Agent agent;
+    private Agent targetAgent;
 
-    double timeToTarget = 0.1;
+    static double timeToTarget = 0.1;
 
     public VelocityMatch(Agent agent, Agent target)
     {
         this.agent = agent;
-        this.target = target;
+        this.targetAgent = target;
     }
 
     @Override
     public SteeringOutput getSteering()
     {
-        return VelocityMatch.matchVelocity(agent, target.getVelocity(), timeToTarget);
+        return VelocityMatch.matchVelocity(agent, targetAgent.getVelocity());
     }
 
-    public static SteeringOutput matchVelocity(Agent agent, Point targetVelocity, double timeToTarget)
+    public static SteeringOutput matchVelocity(Agent agent, Point targetVelocity)
     {
         double maxAcceleration = agent.getMaxAcceleration();
 

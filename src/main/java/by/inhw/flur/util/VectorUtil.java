@@ -2,9 +2,9 @@ package by.inhw.flur.util;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
-import static java.lang.Math.sqrt;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 import by.inhw.flur.model.movement.Point;
 
 public class VectorUtil
@@ -55,6 +55,11 @@ public class VectorUtil
     public static Point sub(Point p1, Point p2)
     {
         return new Point(p1.getX() - p2.getX(), p1.getY() - p2.getY(), p1.getZ() - p2.getZ());
+    }
+
+    public static Point sub2d(Point p1, Point p2)
+    {
+        return new Point(p1.getX() - p2.getX(), p1.getY() - p2.getY(), p1.getZ());
     }
 
     public static Point add(Point p1, Point p2)
@@ -322,6 +327,16 @@ public class VectorUtil
             vector.normalize();
             vector.multiplySelf(maxValue);
         }
+    }
 
+    /**
+     * Returns true if 2 vectors are roughly similar.
+     */
+    public static boolean near(Point v1, Point v2)
+    {
+        double margin = 0.3;
+
+        return abs(v1.getX() - v2.getX()) < margin && abs(v1.getY() - v2.getY()) < margin
+                && abs(v1.getZ() - v2.getZ()) < margin;
     }
 }

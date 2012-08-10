@@ -1,7 +1,8 @@
 package by.inhw.flur.model.movement;
 
 /**
- * Represents a point in space, or a vector, just as you wish.
+ * Represents a point in space, or a vector, just as you wish. Could be named
+ * Vector3.
  */
 public final class Point
 {
@@ -81,60 +82,6 @@ public final class Point
         this.x -= point.x;
         this.y -= point.y;
         this.z -= point.z;
-    }
-
-    private double decreezeToZero(double value, double decreazeOn)
-    {
-        if (value < 0)
-        {
-            double newValue = value + decreazeOn;
-            if (newValue > 0)
-            {
-                return 0;
-            }
-            else
-            {
-                return newValue;
-            }
-        }
-        else
-        {
-            double newValue = value - decreazeOn;
-            if (newValue < 0)
-            {
-                return 0;
-            }
-            else
-            {
-                return newValue;
-            }
-        }
-    }
-
-    private double decreeze(double value, double decreazeOn)
-    {
-        if (value < 0)
-        {
-            return value + decreazeOn;
-        }
-        else
-        {
-            return value - decreazeOn;
-        }
-    }
-
-    public void decreazeToZero(double decreazeOn)
-    {
-        x = decreezeToZero(x, decreazeOn);
-        y = decreezeToZero(y, decreazeOn);
-        z = decreezeToZero(z, decreazeOn);
-    }
-
-    public void decreaze(double decreazeOn)
-    {
-        x = decreeze(x, decreazeOn);
-        y = decreeze(y, decreazeOn);
-        z = decreeze(z, decreazeOn);
     }
 
     /**
